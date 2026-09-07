@@ -1,0 +1,4 @@
+const nav=document.querySelector('#nav'),menu=document.querySelector('.menu');menu?.addEventListener('click',()=>nav.classList.toggle('open'));
+const form=document.querySelector('#booking-form');
+form?.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);const text=`Hi Zapify Designs! I'd like to book a Zapify Nail Studio appointment.%0A%0AName: ${encodeURIComponent(d.get('name'))}%0APhone: ${encodeURIComponent(d.get('phone'))}%0AService: ${encodeURIComponent(d.get('service'))}%0ADate: ${encodeURIComponent(d.get('date'))}%0ATime: ${encodeURIComponent(d.get('time'))}`;window.open(`https://wa.me/27743899657?text=${text}`,'_blank','noopener,noreferrer')});
+const today=new Date();const pad=n=>String(n).padStart(2,'0');document.querySelector('input[type=date]')?.setAttribute('min',`${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`);

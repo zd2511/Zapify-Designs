@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zd2511.github.io/Zapify-Designs/sitemap.xml

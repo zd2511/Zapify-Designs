@@ -1,0 +1,7 @@
+const pad=n=>String(n).padStart(2,'0');
+function tick(){const d=new Date();document.querySelector('#clock').textContent=`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;document.querySelector('#date').textContent=d.toLocaleDateString(undefined,{weekday:'long',day:'2-digit',month:'long',year:'numeric'});}
+tick();setInterval(tick,1000);
+let frames=0,last=performance.now(),display=144;function fpsLoop(now){frames++;if(now-last>=1000){display=Math.round(frames*1000/(now-last));display=Math.max(1,Math.min(240,display));document.querySelector('#fps').firstChild.textContent=display+' ';frames=0;last=now}requestAnimationFrame(fpsLoop)}requestAnimationFrame(fpsLoop);
+const menu=document.querySelector('.menu'),nav=document.querySelector('#nav');menu?.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',open)});
+nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+document.querySelector('#contact-form')?.addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const msg=`Hi Zapify Designs! I'd like a free Zapify IT/CYBER consultation.%0A%0AName: ${encodeURIComponent(f.get('name'))}%0AEmail: ${encodeURIComponent(f.get('email'))}%0ACompany: ${encodeURIComponent(f.get('company'))}%0ARequest: ${encodeURIComponent(f.get('message'))}`;window.open(`https://wa.me/27743899657?text=${msg}`,'_blank','noopener,noreferrer')});
