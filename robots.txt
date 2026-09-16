@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
 
-Sitemap: https://vtsenergysecurity.co.za/sitemap.xml
+Sitemap: https://zapifydesigns.co.za/sitemap.xml

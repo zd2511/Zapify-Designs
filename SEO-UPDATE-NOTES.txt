@@ -1,0 +1,11 @@
+SEO/Analytics update applied to the existing Zapify Designs site.
+
+- Added GA4 Google tag G-HCSWFXKCZF to the public HTML pages.
+- Moved Google Search Console verification meta tag inside <head>.
+- Removed obsolete meta keywords from the homepage.
+- Improved homepage Open Graph metadata.
+- Removed non-profile Facebook/LinkedIn search URLs from Organization sameAs.
+- Added canonical/social metadata to portfolio demo pages.
+- Kept the existing design, CSS, JavaScript and page content intact.
+- Updated sitemap to the actual portfolio demo URLs and current lastmod date.
+- robots.txt remains open to public pages and points to the sitemap.
