@@ -1,5 +1,13 @@
-Zapify Designs master website
-Deployment URL: https://zapifydesigns.co.za/
+ZAPIFY DESIGNS WEBSITE UPDATE
 
-The homepage follows the original Zapify Designs black/pink reference direction, with the X social option intentionally removed.
-Portfolio previews use the current demo pages. The homepage includes a lightweight 3D scroll treatment, September launch sale, SEO metadata, structured data, sitemap and robots.txt.
+Updated September 2026.
+
+Highlights:
+- Homepage now explains full-stack development and links to services.html.
+- Service cards expand on click/tap.
+- Added frontend/backend/admin dashboard/database/API explanations.
+- Added Zapify Autozone, Zapify Photography and Zapify Technology demos.
+- Updated Hair Studio, IT/CYBER, Nail Studio, Boutique, Bakery and Scrapbook demos.
+- Added SEO metadata, canonical URL, structured data and sitemap entries.
+
+Note: some demo photography uses remote image URLs from Unsplash. The browser needs internet access to display those remote photographs. Existing local demo assets remain bundled.
