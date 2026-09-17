@@ -1,11 +1,13 @@
-SEO/Analytics update applied to the existing Zapify Designs site.
+SEO/AEO and UX refinement applied to the existing Zapify Designs site.
 
-- Added GA4 Google tag G-HCSWFXKCZF to the public HTML pages.
-- Moved Google Search Console verification meta tag inside <head>.
-- Removed obsolete meta keywords from the homepage.
-- Improved homepage Open Graph metadata.
-- Removed non-profile Facebook/LinkedIn search URLs from Organization sameAs.
-- Added canonical/social metadata to portfolio demo pages.
-- Kept the existing design, CSS, JavaScript and page content intact.
-- Updated sitemap to the actual portfolio demo URLs and current lastmod date.
-- robots.txt remains open to public pages and points to the sitemap.
+- Homepage navigation now uses a dedicated Services page instead of “What We Offer”.
+- Homepage services are intentionally compact and expand on click/keyboard interaction.
+- Added visible Instagram, Facebook and LinkedIn social links to the homepage footer.
+- Organization structured data uses the confirmed Instagram profile as sameAs; Facebook/LinkedIn search pages are not claimed as official sameAs profiles.
+- Added FAQ structured data for the homepage questions to improve machine-readable answers; FAQ rich-result display is controlled by search engines and is not guaranteed.
+- Reworked the homepage hero into a CSS-built laptop/code-editor presentation showing HTML, CSS and JavaScript concepts.
+- Renamed the Zapify Bakery hero wording while keeping the visual food-focused concept.
+- Completely rebuilt the Zapify Technology demo as an interactive Experience Studio with live controls, component tests, typography, cursor controls and responsive UI concepts.
+- Sitemap now contains only indexable public pages and no longer references the removed Autozone demo or noindex portfolio demos.
+- robots.txt points to the canonical sitemap.
+- Existing design system, pricing, portfolio structure and other site functionality were preserved.
