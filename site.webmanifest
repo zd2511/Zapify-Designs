@@ -1,9 +1,1 @@
-{
-  "name": "Zapify Designs",
-  "short_name": "Zapify",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#f22b8f",
-  "icons": []
-}
+{"name":"Zapify Designs","short_name":"Zapify","start_url":"/","display":"standalone","background_color":"#ffffff","theme_color":"#ff1688","description":"Websites, software and digital solutions by Zapify Designs."}
