@@ -1,11 +1,11 @@
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const WA='27743899657';
-function quoteUrl(service='Website'){return `contact.html?service=${encodeURIComponent(service)}`}
+function quoteUrl(service='Website'){return `https://wa.me/${WA}?text=${encodeURIComponent(`Hi Zapify Designs! I'm interested in ${service}. I'd like to discuss the service and pricing.`)}`}
 function init(){
  const header=$('.site-header'); window.addEventListener('scroll',()=>header?.classList.toggle('scrolled',scrollY>20),{passive:true});
  const menu=$('.menu'), nav=$('.mobile-nav'); menu?.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',open)});
  $$('.reveal').forEach(el=>{if(!('IntersectionObserver'in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)el.classList.add('visible');else new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}}),{threshold:.1}).observe(el)});
- $$('.quote-link').forEach(a=>a.addEventListener('click',e=>{const s=a.dataset.service;if(s){e.preventDefault();location.href=quoteUrl(s)}}));
+ $$('.quote-link').forEach(a=>a.addEventListener('click',e=>{const s=a.dataset.service;if(s){e.preventDefault();window.open(quoteUrl(s),'_blank','noopener')}}));
  initCursor(); initChat(); initFAQ();
  const params=new URLSearchParams(location.search), svc=params.get('service'); if(svc&&$('#service'))$('#service').value=svc;
 }

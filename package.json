@@ -1,0 +1,12 @@
+{
+  "name": "zapify-designs-payments",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "cors": "^2.8.5"
+  }
+}
