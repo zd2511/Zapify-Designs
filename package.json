@@ -3,7 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "test": "node tests/catalog.test.js",
+    "check": "node --check server/index.js && node --check server/catalog.js && node --check templates/template-custom.js && node --check js/site.js"
   },
   "dependencies": {
     "express": "^5.1.0",

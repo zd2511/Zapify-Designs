@@ -3,4 +3,7 @@ Allow: /
 Disallow: /checkout.html
 Disallow: /payment-success.html
 Disallow: /customize.html
+Disallow: /server/
+Disallow: /data/
+Disallow: /user-uploads/
 Sitemap: https://zapifydesigns.co.za/sitemap.xml

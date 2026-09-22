@@ -3,7 +3,7 @@ const cors=require("cors");
 const crypto=require("crypto");
 const fs=require("fs");
 const path=require("path");
-const {calculateOrder}=require("./catalog");
+const {calculateOrder,templates,allAddons}=require("./catalog");
 
 const app=express();
 const PORT=process.env.PORT||3000;
@@ -33,9 +33,10 @@ function verifySvix(raw,headers,secret){
 // Raw-body webhook must be registered before express.json().
 app.post("/api/yoco-webhook",express.raw({type:"application/json",limit:"2mb"}),(req,res)=>{
  try{
+  if(!process.env.YOCO_WEBHOOK_SECRET)return res.status(503).send("Webhook verification is not configured");
   const raw=req.body.toString("utf8");
   const headers={"webhook-id":req.get("webhook-id"),"webhook-timestamp":req.get("webhook-timestamp"),"webhook-signature":req.get("webhook-signature")};
-  if(process.env.YOCO_WEBHOOK_SECRET && !verifySvix(raw,headers,process.env.YOCO_WEBHOOK_SECRET))return res.status(401).send("Invalid signature");
+  if(!verifySvix(raw,headers,process.env.YOCO_WEBHOOK_SECRET))return res.status(401).send("Invalid signature");
   const event=JSON.parse(raw||"{}");const type=event.type||event.eventType||"";const data=event.data||event;
   const checkoutId=data.checkoutId||data.checkout?.id;const orderReference=data.metadata?.orderReference||data.metadata?.orderId;
   if(checkoutId||orderReference){const paid=type==="payment.succeeded"||["succeeded","paid","completed"].includes(String(data.status||"").toLowerCase());updateOrder(orderReference||checkoutId,{checkoutId,status:paid?"paid":String(data.status||type||"received").toLowerCase(),webhookEvent:type,paidAt:paid?new Date().toISOString():undefined})}
@@ -45,18 +46,20 @@ app.post("/api/yoco-webhook",express.raw({type:"application/json",limit:"2mb"}),
 
 app.use(express.json({limit:"8mb"}));
 app.get("/api/health",(req,res)=>res.json({ok:true,service:"Zapify payment API"}));
+app.get("/api/catalog",(req,res)=>res.json({templates,addons:allAddons,imagesIncluded:5,additionalImagePrice:15,currency:"ZAR"}));
 
 app.post("/api/create-checkout",async(req,res)=>{
  try{
   if(!process.env.YOCO_SECRET_KEY)return res.status(503).json({error:"Payment server is not configured with YOCO_SECRET_KEY."});
-  const input=req.body||{};const calc=calculateOrder(input);const customer=safeCustomer(input.customer);
+  const input=req.body||{};const clientRequestId=String(input.clientRequestId||'').slice(0,120);if(clientRequestId){const existing=readOrders().find(o=>o.clientRequestId===clientRequestId&&o.status==='pending');if(existing?.checkoutId)return res.status(409).json({error:'This checkout is already being created. Please use the existing payment session.',checkoutId:existing.checkoutId,orderReference:existing.orderReference});}let calc;try{calc=calculateOrder(input)}catch(err){return res.status(400).json({error:err.message||"Invalid order."});}const customer=safeCustomer(input.customer);
+  if(!/^\S+@\S+\.\S+$/.test(customer.email))return res.status(400).json({error:"Please provide a valid email address."});
   if(!customer.name||!customer.email||!customer.phone||!customer.businessName)return res.status(400).json({error:"Name, email, phone and business name are required."});
   const orderReference=`ZAP-${new Date().toISOString().slice(0,10).replace(/-/g,"")}-${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
   const payload={amount:Math.round(calc.total*100),currency:"ZAR",description:`Zapify Designs — ${calc.templateName}`,successUrl:`${SITE}/payment-success.html`,cancelUrl:`${SITE}/payment-success.html?status=cancelled`,failureUrl:`${SITE}/payment-success.html?status=failed`,metadata:{orderReference,template:calc.templateKey},lineItems:[{name:calc.templateName,quantity:1,amount:Math.round(calc.total*100),currency:"ZAR"}]};
   const response=await fetch("https://payments.yoco.com/api/checkouts",{method:"POST",headers:{"Authorization":`Bearer ${process.env.YOCO_SECRET_KEY}`,"Content-Type":"application/json","Idempotency-Key":orderReference},body:JSON.stringify(payload)});
   const data=await response.json().catch(()=>({}));
   if(!response.ok||!data.redirectUrl)return res.status(502).json({error:"Yoco did not return a checkout URL.",providerStatus:response.status});
-  saveOrder({orderReference,checkoutId:data.id||null,status:"pending",template:calc.templateKey,templateName:calc.templateName,basePrice:calc.basePrice,additionalImages:calc.additionalImages,featureIds:calc.featureIds,total:calc.total,customer,customization:{business:input.customization?.business||"",headline:input.customization?.headline||"",services:input.customization?.services||"",about:input.customization?.about||"",cta:input.customization?.cta||"",fontFamily:input.customization?.fontFamily||"",preset:Number(input.customization?.preset||0)},createdAt:new Date().toISOString()});
+  saveOrder({clientRequestId,orderReference,checkoutId:data.id||null,status:"pending",template:calc.templateKey,templateName:calc.templateName,basePrice:calc.basePrice,additionalImages:calc.additionalImages,additionalImagePrice:calc.additionalImagePrice,featureIds:calc.featureIds,featureTotal:calc.featureTotal,total:calc.total,customer,customization:{business:input.customization?.business||"",headline:input.customization?.headline||"",services:input.customization?.services||"",about:input.customization?.about||"",cta:input.customization?.cta||"",fontFamily:input.customization?.fontFamily||"",preset:Number(input.customization?.preset||0),totalImages:calc.totalImages},createdAt:new Date().toISOString()});
   res.json({redirectUrl:data.redirectUrl,checkoutId:data.id||null,orderReference,total:calc.total});
  }catch(e){console.error(e);res.status(500).json({error:"Unable to create checkout."})}
 });

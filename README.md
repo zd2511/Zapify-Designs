@@ -94,3 +94,33 @@ Before going live:
 - Confirm the webhook URL is publicly reachable over HTTPS.
 - Make a successful test purchase and verify the order status server-side.
 - Confirm the order store/database is persistent.
+
+## Zapify Template Builder rebuild
+
+The template system now uses a server-owned catalog in `server/catalog.js`. Template base prices, add-on prices, applicability and image pricing are calculated server-side. The browser consumes `/api/catalog` for the editor UI.
+
+### Asset boundaries
+
+- `marketing-assets/` — marketing website imagery only.
+- `template-assets/` — template/demo imagery only.
+- `user-uploads/` — reserved runtime destination for customer uploads.
+- `demo/` — existing portfolio/demo projects; not used by the marketing service/template editor.
+
+### Payment configuration
+
+Set these environment variables in the hosting environment (never commit the secret):
+
+- `YOCO_SECRET_KEY`
+- `YOCO_WEBHOOK_SECRET`
+- `PUBLIC_SITE_URL`
+- `CORS_ORIGIN`
+- `ORDER_STORE_PATH`
+
+The checkout endpoint recalculates the amount from template/add-on IDs and the number of uploaded images. Browser-supplied prices are ignored. The webhook requires the configured signing secret.
+
+### Local checks
+
+- `npm test` — pricing/catalog smoke tests.
+- `npm run check` — JavaScript syntax checks.
+
+A real Yoco transaction requires the merchant's Yoco test credentials and webhook configuration; no credentials are included in this archive.
