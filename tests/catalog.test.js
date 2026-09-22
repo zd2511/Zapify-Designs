@@ -1,12 +1,14 @@
 const assert=require('node:assert/strict');
 const {templates,allAddons,scrapbookFeatures,calculateOrder}=require('../server/catalog');
 assert.equal(Object.keys(templates).length,6);
+assert.equal(Object.values(templates).every(t=>t.price===100),true);
 assert.equal(scrapbookFeatures.length>=30,true);
 assert.equal(allAddons.length>=60,true);
 const img='data:image/jpeg;base64,AAAA';
-assert.equal(calculateOrder({template:'salon',customization:{images:[img,img,img,img,img]}}).total,249);
-assert.equal(calculateOrder({template:'salon',customization:{images:[img,img,img,img,img,img,img]}}).total,279);
-assert.equal(calculateOrder({template:'scrapbook',customization:{images:Array(7).fill(img),features:[{id:'paper-texture'},{id:'premium-animations'}]}}).total,294);
-assert.equal(calculateOrder({template:'scrapbook',customization:{images:[img],features:[{id:'not-a-real-feature',price:1e-8}]}}).total,199);
+assert.equal(calculateOrder({template:'salon',customization:{images:[img,img,img,img,img]}}).total,100);
+assert.equal(calculateOrder({template:'salon',customization:{images:[img,img,img,img,img,img,img]}}).total,130);
+assert.equal(calculateOrder({template:'scrapbook',customization:{images:Array(7).fill(img),features:[{id:'paper-texture'},{id:'premium-animations'}]}}).total,195);
+assert.equal(calculateOrder({template:'scrapbook',customization:{images:[img],features:[{id:'not-a-real-feature',price:1e-8}]}}).total,100);
+assert.equal(calculateOrder({template:'salon',customization:{features:[{id:'custom-palette'}]}}).total,150);
 assert.throws(()=>calculateOrder({template:'scrapbook',customization:{images:['data:text/plain;base64,AAAA']}}));
 console.log('Zapify catalog/payment calculation smoke tests passed.');

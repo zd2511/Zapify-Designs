@@ -125,3 +125,14 @@ The checkout endpoint recalculates the amount from template/add-on IDs and the n
 - `npm run check` — JavaScript syntax checks.
 
 A real Yoco transaction requires the merchant's Yoco credentials and webhook configuration. The live secret key supplied during development is deliberately not embedded in the archive or frontend.
+
+## Current builder/payment notes
+
+- All six website templates are R100 base price.
+- Five images are included; each additional image is R15.
+- Custom colour palette is a paid R50 feature and lets the customer choose accent, background and text colours.
+- The editor lists premium features by category without a search box.
+- The purchase summary is at the bottom of the left editor panel; there is no separate checkout page or sticky price box.
+- The live preview loads the actual template directly in an iframe (`templates/<template>.html`) and applies changes with `postMessage`.
+- The Yoco Checkout API request uses the currently documented `amount`, `currency`, redirect URLs, metadata, `clientReferenceId` and `externalId` fields; the browser never supplies the payable amount to Yoco.
+- If the frontend is hosted separately from the Node API, set `window.ZAPIFY_API_BASE` in `js/payment-config.js` to the API origin.
