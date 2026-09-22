@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /checkout.html
 Disallow: /payment-success.html
 Disallow: /customize.html
 Disallow: /server/

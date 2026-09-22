@@ -1,10 +1,10 @@
 const templates={
-  salon:{name:'Lumi Beauty',category:'Salon / Beauty',price:100},
-  mechanic:{name:'Vaal Auto',category:'Automotive',price:100},
-  restaurant:{name:'Casa Vero',category:'Restaurant / Café',price:100},
-  photographer:{name:'Nova Studio',category:'Photography / Creative',price:100},
-  construction:{name:'Build Vaal',category:'Construction',price:100},
-  scrapbook:{name:'Digital Scrapbook',category:'Personal / Creative',price:100}
+  salon:{name:'Lumi Beauty',category:'Salon / Beauty',price:249},
+  mechanic:{name:'Vaal Auto',category:'Automotive',price:299},
+  restaurant:{name:'Casa Vero',category:'Restaurant / Café',price:279},
+  photographer:{name:'Nova Studio',category:'Photography / Creative',price:299},
+  construction:{name:'Build Vaal',category:'Construction',price:349},
+  scrapbook:{name:'Digital Scrapbook',category:'Personal / Creative',price:199}
 };
 
 const addonList=[

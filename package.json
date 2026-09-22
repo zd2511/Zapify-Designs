@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server/index.js",
     "test": "node tests/catalog.test.js",
-    "check": "node --check server/index.js && node --check server/catalog.js && node --check templates/template-custom.js && node --check js/site.js"
+    "check": "node --check server/index.js && node --check server/catalog.js && node --check templates/template-custom.js && node --check js/site.js && node --check js/customize.js && node --check js/payment-success.js"
   },
   "dependencies": {
     "express": "^5.1.0",

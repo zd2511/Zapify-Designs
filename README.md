@@ -11,8 +11,8 @@ This project is a rebuilt version of the supplied Zapify Designs website.
 - Projects/demo gallery with Zapify AutoZone removed from public presentation.
 - Templates marketplace with website templates and Digital Scrapbooks.
 - Live template customiser: colours, typography, text and images update without refresh.
-- Scrapbook pricing: R100 base, 5 images included, R15 per additional image, R25 per selected custom feature.
-- 20 scrapbook customisation options.
+- Template pricing is centrally configured per template; 5 images are included and every additional image costs R15.
+- 48 working Scrapbook-specific customisation options.
 - Actual template previews use image assets rather than large empty placeholders.
 - "Zapify Template" branding removed from the customer-facing website template designs.
 - SEO metadata, canonical URLs, Open Graph tags, JSON-LD, robots.txt and sitemap.xml.
@@ -26,7 +26,7 @@ GitHub Pages can serve the frontend but cannot safely execute a Yoco secret key.
 The flow is:
 
 1. Customer customises a template.
-2. Customer enters checkout details.
+2. Customer clicks purchase and enters customer details inside the same customisation panel — there is no separate checkout page.
 3. Browser sends only the order configuration to `/api/create-checkout`.
 4. The server validates the template/options and recalculates the total.
 5. The server creates a Yoco hosted checkout with the secret key.
@@ -47,6 +47,7 @@ Copy `.env.example` and configure the server:
 - `PUBLIC_SITE_URL` — normally `https://zapifydesigns.co.za`.
 - `CORS_ORIGIN` — frontend origin.
 - `ORDER_STORE_PATH` — persistent path for order storage.
+- `YOCO_CHECKOUT_ENDPOINT` — optional override for testing; defaults to Yoco production Checkout API.
 
 Never commit `.env`.
 
@@ -123,4 +124,4 @@ The checkout endpoint recalculates the amount from template/add-on IDs and the n
 - `npm test` — pricing/catalog smoke tests.
 - `npm run check` — JavaScript syntax checks.
 
-A real Yoco transaction requires the merchant's Yoco test credentials and webhook configuration; no credentials are included in this archive.
+A real Yoco transaction requires the merchant's Yoco credentials and webhook configuration. The live secret key supplied during development is deliberately not embedded in the archive or frontend.
