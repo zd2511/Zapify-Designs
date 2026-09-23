@@ -1,6 +1,4 @@
-// Set this to your payment API origin when the static site and Node API are hosted separately.
-// Example: window.ZAPIFY_API_BASE = 'https://api.zapifydesigns.co.za';
+// Frontend payment configuration. Keep Yoco secret keys server-side only.
+// If the Node API is hosted separately, set this to its HTTPS origin.
 window.ZAPIFY_API_BASE = window.ZAPIFY_API_BASE || '';
-
-// Public Yoco key is safe to expose, but hosted Checkout redirects do not require it in the browser.
-window.ZAPIFY_YOCO_PUBLIC_KEY = window.ZAPIFY_YOCO_PUBLIC_KEY || 'pk_live_14c05324bVwPVyOaa364';
+window.ZAPIFY_YOCO_PUBLIC_KEY = window.ZAPIFY_YOCO_PUBLIC_KEY || '';

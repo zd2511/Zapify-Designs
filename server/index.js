@@ -88,8 +88,8 @@ app.post("/api/create-checkout",async(req,res)=>{
   const cancelUrl=`${SITE}/payment-success.html?status=cancelled&orderReference=${encodeURIComponent(orderReference)}`;
   const failureUrl=`${SITE}/payment-success.html?status=failed&orderReference=${encodeURIComponent(orderReference)}`;
   const amountCents=Math.round(calc.total*100);
-  const payload={amount:amountCents,currency:"ZAR",description:`Zapify Designs — ${calc.templateName}`,reference:orderReference,successUrl,cancelUrl,failureUrl,metadata:{orderReference,template:calc.templateKey}};
-  const response=await fetch(YOCO_CHECKOUT_ENDPOINT,{method:"POST",headers:{"Authorization":`Bearer ${process.env.YOCO_SECRET_KEY}`,"Content-Type":"application/json","Idempotency-Key":orderReference},body:JSON.stringify(payload)});
+  const payload={amount:amountCents,currency:"ZAR",description:`Zapify Designs — ${calc.templateName}`,reference:orderReference,successUrl,cancelUrl,failureUrl,metadata:{orderReference,template:calc.templateKey,clientRequestId}};
+  const response=await fetch(YOCO_CHECKOUT_ENDPOINT,{signal:AbortSignal.timeout(30000),method:"POST",headers:{"Authorization":`Bearer ${process.env.YOCO_SECRET_KEY}`,"Content-Type":"application/json","Idempotency-Key":clientRequestId||orderReference},body:JSON.stringify(payload)});
   const data=await response.json().catch(()=>({}));
   if(!response.ok){console.error("Yoco checkout creation failed",{status:response.status,body:data});return res.status(502).json({error:"Yoco could not create the payment session. Please try again or contact Zapify."})}
   const redirectUrl=data.redirectUrl||data.checkoutUrl||data.hostedUrl;

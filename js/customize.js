@@ -2,7 +2,11 @@ const API_BASE=(window.ZAPIFY_API_BASE||'').replace(/\/$/,'');const $=id=>docume
 const defaults={salon:{business:'Lumi Beauty',headline:'Beautiful hair, made personal.',services:'Hair · Colour · Styling',about:'Modern beauty, thoughtful service and a calm studio experience designed around every client.',cta:'Book an appointment ↗',font:'DM Sans, sans-serif'},mechanic:{business:'Vaal Auto',headline:'SERVICE YOU CAN TRUST.',services:'Diagnostics · Repairs · Fitment',about:'Practical automotive service for drivers who want clear answers, reliable workmanship and no-nonsense communication.',cta:'Book a service ↗',font:'DM Sans, sans-serif'},restaurant:{business:'Casa Vero',headline:'Good food. Good company.',services:'Lunch · Dinner · Events',about:'A warm restaurant concept built around seasonal plates, generous tables and memorable evenings.',cta:'Reserve a table ↗',font:'Georgia, serif'},photographer:{business:'Nova Studio',headline:'Stories, captured honestly.',services:'Portraits · Events · Brands',about:'An image-first portfolio for photographers whose work should do most of the talking.',cta:'View portfolio ↗',font:'Inter, system-ui, sans-serif'},construction:{business:'Build Vaal',headline:'BUILT WITH PURPOSE.',services:'Renovations · Building · Projects',about:'A structured construction concept for teams that need to communicate capability, process and trust clearly.',cta:'Request a quote ↗',font:'DM Sans, sans-serif'},scrapbook:{business:'Your Story',headline:'Your story deserves a place to live.',services:'Photos · Notes · Moments',about:'A warm, layered digital scrapbook for birthdays, milestones, family memories, travel, personal stories and creative projects.',cta:'Save the memories ↗',font:'Georgia, serif'}};
 const presetMap={salon:[['Blush','#e32976','#fff2f7','#19191f'],['Sage','#789b88','#f1f7f2','#17221b'],['Noir','#111','#f2f2f3','#111']],mechanic:[['Volt','#ffb44c','#111a20','#fff'],['Redline','#ef4b45','#211619','#fff'],['Electric','#38bdf8','#0d1820','#fff']],restaurant:[['Terracotta','#c56d4a','#f7eee7','#241713'],['Olive','#89956a','#f2f4e9','#20251a'],['Midnight','#9c7bd9','#17131e','#fff']],photographer:[['Mono','#111','#f1f1f1','#111'],['Rose','#d76a91','#fff1f7','#22151c'],['Cobalt','#4f78c8','#eef4ff','#101827']],construction:[['Safety','#e0ad2e','#202a22','#fff'],['Orange','#e56e32','#2c211c','#fff'],['Signal Blue','#4f8ebc','#152433','#fff']],scrapbook:[['Candy','#d65d92','#fff8fb','#2b1e27'],['Sunny','#d29b2f','#fff8df','#332a18'],['Ocean','#3f83a7','#edf8ff','#182a36']]};
 const ids=['customPaletteToggle','primaryColor','secondaryColor','accentColor','backgroundColor','textColor','fontFamily','headingFont','fontSize','buttonStyle','buttonColor','radius','shadow','spacing','navStyle','navPosition','stickyNav','transparentHeader','animations','pageTransitions','mobileDrawer','heroLayout','heroOverlay','showAbout','showServices','showGallery','showTestimonials','showFaq','showPricing','showContact','showNewsletter','showBlog','showTimeline','instagram','facebook','tiktok','youtube','footerText','imagePosition','lightbox','imageCaptions','seoTitle','seoDescription','noIndex','analyticsId','customCss','customSlug','whatsappButton','fullscreenMode','whatsapp','bookingUrl','mapsUrl','customDomain'];
-async function loadCatalog(){const r=await fetch(API_BASE+'/api/catalog',{cache:'no-store'});if(!r.ok)throw Error('Pricing service unavailable.');catalog=await r.json()}
+async function loadCatalog(){
+ const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),6000);
+ try{const r=await fetch(API_BASE+'/api/catalog',{cache:'no-store',signal:controller.signal});if(!r.ok)throw Error('Pricing service unavailable.');catalog=await r.json();return true}
+ finally{clearTimeout(timer)}
+}
 function template(){return $('template').value}function applyDefaults(){const d=defaults[template()];$('business').value=d.business;$('headline').value=d.headline;$('services').value=d.services;$('about').value=d.about;$('cta').value=d.cta;$('fontFamily').value=d.font;['headingFont','buttonStyle','navStyle','navPosition','heroLayout','imagePosition'].forEach(id=>{if($(id)&&!$(id).value)$(id).value=$(id).options[0].value});}
 function renderPresets(){
  const map=presetMap[template()]||[];
@@ -39,26 +43,43 @@ function moveSectionOrder(i,dir){
 let sectionOrderCache=['hero','sections','gallery','dynamic','footer'];
 function readImage(file,cb){if(!file)return;if(!/^image\/(jpeg|png|webp|avif|svg\+xml)$/.test(file.type)||file.size>5*1024*1024){showError('Use a supported image under 5MB.');return}const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file)}
 function renderUploads(){const box=$('uploads');box.innerHTML='';[...images,...extraImages].forEach((v,i)=>{const extra=i>=5;const j=extra?i-5:i;const row=document.createElement('div');row.className='upload-row';row.innerHTML=`<label>Image ${i+1}${i===0?' · main':''}<input type="file" accept="image/jpeg,image/png,image/webp,image/avif"></label><button class="remove" type="button">Remove</button>`;box.appendChild(row);row.querySelector('input').onchange=()=>readImage(row.querySelector('input').files[0],val=>{if(extra)extraImages[j]=val;else images[j]=val;send()});row.querySelector('.remove').onclick=()=>{if(extra)extraImages.splice(j,1);else images[j]=null;renderUploads();send()}});updatePrice()}
-function renderAddons(){if(!catalog)return;const applicable=catalog.addons.filter(a=>a.templates==='all'||a.templates.includes(template()));const groups={design:'Design',images:'Images',content:'Content',functionality:'Functionality',privacy:'Privacy',premium:'Premium',scrapbook:'Scrapbook'};$('addons').innerHTML=Object.entries(groups).map(([key,label])=>{const list=applicable.filter(a=>a.category===key);if(!list.length)return '';return `<div class="addon-group"><h3>${label}</h3>${list.map(a=>`<label class="addon"><input type="checkbox" data-id="${a.id}" ${features.has(a.id)?'checked':''}><span><b>${a.name}</b><small>${a.description}</small></span><strong>+R${a.price}</strong></label>`).join('')}</div>`}).join('');$('addons').querySelectorAll('[data-id]').forEach(x=>x.onchange=()=>{x.checked?features.add(x.dataset.id):features.delete(x.dataset.id);syncPaidControls();renderSectionOrder();send()});$('scrapbookEditor').style.display=template()==='scrapbook'?'block':'none';syncPaidControls();renderSectionOrder()}
+function renderAddons(){
+ if(!catalog)return;
+ const applicable=catalog.addons.filter(a=>a.templates==='all'||(Array.isArray(a.templates)&&a.templates.includes(template())));
+ const groups={design:'Design',images:'Images',content:'Content',functionality:'Functionality',privacy:'Privacy',premium:'Premium',seo:'SEO',scrapbook:'Scrapbook'};
+ $('addons').innerHTML=Object.entries(groups).map(([key,label])=>{
+   const list=applicable.filter(a=>a.category===key);if(!list.length)return '';
+   return `<div class="addon-group"><h3>${label}</h3>${list.map(a=>`<label class="addon ${a.paid?'addon-paid':'addon-free'}"><input type="checkbox" data-id="${a.id}" ${features.has(a.id)?'checked':''}><span><b>${a.name}</b><small>${a.description}</small></span><strong>${a.paid?`+R${a.price}`:'Included'}</strong></label>`).join('')}</div>`
+ }).join('');
+ $('addons').querySelectorAll('[data-id]').forEach(x=>x.onchange=()=>{
+   x.checked?features.add(x.dataset.id):features.delete(x.dataset.id);
+   syncPaidControls();renderSectionOrder();send()
+ });
+ const websiteCount=applicable.filter(a=>a.templates==='all').length;
+ const websitePaid=applicable.filter(a=>a.templates==='all'&&a.paid).length;
+ const scrapbookCount=applicable.filter(a=>Array.isArray(a.templates)&&a.templates.includes('scrapbook')).length;
+ const intro=document.createElement('div');
+ intro.className='feature-summary';
+ intro.innerHTML=template()==='scrapbook'
+   ? `<b>50 scrapbook features</b><span>35 included · 15 paid</span>`
+   : `<b>${websiteCount} website features</b><span>${websiteCount-websitePaid} included · ${websitePaid} paid</span>`;
+ $('addons').prepend(intro);
+ $('scrapbookEditor').style.display=template()==='scrapbook'?'block':'none';
+ syncPaidControls();renderSectionOrder()
+}
 function get(id){const e=$(id);if(!e)return null;return e.type==='checkbox'?e.checked:e.value}function config(){return {template:template(),preset,sectionOrder:sectionOrderCache.slice(),business:get('business'),headline:get('headline'),services:get('services'),about:get('about'),cta:get('cta'),primaryColor:get('primaryColor'),secondaryColor:get('secondaryColor'),accentColor:get('accentColor'),backgroundColor:get('backgroundColor'),textColor:get('textColor'),fontFamily:get('fontFamily'),headingFont:get('headingFont'),fontSize:+get('fontSize'),buttonStyle:get('buttonStyle'),buttonColor:get('buttonColor'),radius:+get('radius'),shadow:+get('shadow'),spacing:+get('spacing'),navStyle:get('navStyle'),navPosition:get('navPosition'),stickyNav:get('stickyNav'),transparentHeader:get('transparentHeader'),animations:get('animations'),pageTransitions:get('pageTransitions'),mobileDrawer:get('mobileDrawer'),heroLayout:get('heroLayout'),heroOverlay:+get('heroOverlay'),showAbout:get('showAbout'),showServices:get('showServices'),showGallery:get('showGallery'),showTestimonials:get('showTestimonials'),showFaq:get('showFaq'),showPricing:get('showPricing'),showContact:get('showContact'),showNewsletter:get('showNewsletter'),showBlog:get('showBlog'),showTimeline:get('showTimeline'),instagram:get('instagram'),facebook:get('facebook'),tiktok:get('tiktok'),youtube:get('youtube'),footerText:get('footerText'),imagePosition:get('imagePosition'),lightbox:get('lightbox'),imageCaptions:get('imageCaptions'),whatsapp:get('whatsapp'),bookingUrl:get('bookingUrl'),mapsUrl:get('mapsUrl'),customDomain:get('customDomain'),seoTitle:get('seoTitle'),seoDescription:get('seoDescription'),noIndex:get('noIndex'),analyticsId:get('analyticsId'),customCss:get('customCss'),customSlug:get('customSlug'),whatsappButton:get('whatsappButton'),fullscreenMode:get('fullscreenMode'),images:images.filter(Boolean),extraImages:extraImages.filter(Boolean),heroImage,logoImage,faviconImage,ogImage,features:[...features].map(id=>({id})),scrapbook:{title:get('scrapTitle'),coverColor:get('coverColor'),pageColor:get('pageColor'),paperStyle:get('paperStyle'),pages:scrapPages}}}
-function calculate(){const totalImages=images.filter(Boolean).length+extraImages.filter(Boolean).length;const extra=Math.max(0,totalImages-(catalog?.imagesIncluded||5));const selected=(catalog?.addons||[]).filter(a=>features.has(a.id));const imageTotal=extra*(catalog?.additionalImagePrice||15),addTotal=selected.reduce((s,a)=>s+a.price,0),base=catalog?.templates?.[template()]?.price??100;return {totalImages,extra,imageTotal,selected,addTotal,base,total:base+imageTotal+addTotal}}
-function updatePrice(){if(!catalog)return;const x=calculate();$('purchaseBase').textContent='R'+x.base;$('purchaseImages').textContent='R'+x.imageTotal;$('purchaseFeatures').textContent='R'+x.addTotal;$('purchaseTotal').textContent='R'+x.total;$('imageCost').textContent=`${x.totalImages} image${x.totalImages===1?'':'s'} · 5 included · ${x.extra} additional × R${catalog.additionalImagePrice}`;$('priceHint').textContent=`${x.selected.length} paid feature${x.selected.length===1?'':'s'} selected`}
+function calculate(){const totalImages=images.filter(Boolean).length+extraImages.filter(Boolean).length;const extra=Math.max(0,totalImages-(catalog?.imagesIncluded||5));const selected=(catalog?.addons||[]).filter(a=>features.has(a.id));const imageTotal=extra*(catalog?.additionalImagePrice||15),addTotal=selected.reduce((s,a)=>s+(a.paid?a.price:0),0),base=catalog?.templates?.[template()]?.price??100;return {totalImages,extra,imageTotal,selected,addTotal,base,total:base+imageTotal+addTotal}}
+function updatePrice(){if(!catalog)return;const x=calculate();$('purchaseBase').textContent='R'+x.base;$('purchaseImages').textContent='R'+x.imageTotal;$('purchaseFeatures').textContent='R'+x.addTotal;$('purchaseTotal').textContent='R'+x.total;$('imageCost').textContent=`${x.totalImages} image${x.totalImages===1?'':'s'} · 5 included · ${x.extra} additional × R${catalog.additionalImagePrice}`;const paidSelected=x.selected.filter(a=>a.paid).length;
+ const freeSelected=x.selected.length-paidSelected;
+ $('priceHint').textContent=`${paidSelected} paid feature${paidSelected===1?'':'s'} · ${freeSelected} included feature${freeSelected===1?'':'s'} selected`}
 function send(){const c=config();localStorage.setItem('zapifyTemplatePreview',JSON.stringify(c));updatePrice();const f=$('preview');f?.contentWindow?.postMessage({type:'zapify-preview',config:c},'*')}
-async function loadPreview(){
- const f=$('preview'); const url=new URL(`templates/${encodeURIComponent(template())}.html?preview=1&t=${Date.now()}`,location.href).href;
+function loadPreview(){
+ const f=$('preview');
+ const url=`templates/${encodeURIComponent(template())}.html?preview=1&t=${Date.now()}`;
  $('previewStatus').textContent='Loading live preview…';
  f.onload=()=>{send();$('previewStatus').textContent='Live · changes update instantly'};
+ f.onerror=()=>{showError('The live preview could not be loaded. Check that the template files are deployed with the editor.');$('previewStatus').textContent='Preview unavailable'};
  f.src=url;
- try{
-   const r=await fetch(url,{cache:'no-store'});
-   if(!r.ok)throw Error('preview fetch failed');
-   const source=await r.text();
-   const base=new URL('.',url).href;
-   const doc=source.replace('<head>','<head><base href="'+base+'">');
-   f.srcdoc=doc;
- }catch(e){
-   f.src=url;
- }
 }
 function showError(msg){$('editorError').textContent=msg;$('editorError').classList.add('show');setTimeout(()=>$('editorError').classList.remove('show'),5000)}
 function page(){return scrapPages[selectedPage]}
@@ -79,4 +100,9 @@ function resetEditor(){
  syncPaidControls();loadPreview();updatePrice();
 }
 $('purchaseForm').addEventListener('submit',async e=>{e.preventDefault();const pay=$('payButton');pay.disabled=true;$('payStatus').textContent='Creating secure checkout…';const clientRequestId=sessionStorage.getItem('zapifyClientRequestId')||crypto.randomUUID();const payload={template:template(),clientRequestId,customization:config(),customer:{name:$('buyerName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim(),businessName:$('businessName').value.trim(),category:$('category').value.trim(),description:$('description').value.trim(),products:$('products').value.trim(),notes:$('notes').value.trim()}};sessionStorage.setItem('zapifyClientRequestId',clientRequestId);sessionStorage.setItem('zapifyTemplateOrder',JSON.stringify({template:template(),features:calculate().selected.map(a=>({id:a.id,name:a.name,price:a.price})),customization:config(),business:get('business'),about:get('about'),services:get('services'),headline:get('headline'),cta:get('cta')}));try{const r=await fetch(API_BASE+'/api/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok)throw Error(d.error||'Payment service error.');sessionStorage.setItem('zapifyCheckoutId',d.checkoutId||'');sessionStorage.setItem('zapifyOrderReference',d.orderReference||'');location.href=d.redirectUrl}catch(err){$('payStatus').textContent=err.message;pay.disabled=false}});
-(async()=>{try{await loadCatalog()}catch{catalog=window.ZAPIFY_CATALOG_FALLBACK}$('template').value=params.get('template')||'salon';applyDefaults();bind();resetEditor()})();
+(()=>{
+ catalog=window.ZAPIFY_CATALOG_FALLBACK;
+ $('template').value=params.get('template')||'salon';
+ applyDefaults();bind();resetEditor();
+ loadCatalog().then(()=>{renderAddons();updatePrice();send()}).catch(()=>{});
+})();
