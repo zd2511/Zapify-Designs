@@ -88,18 +88,19 @@ function loadPreview(){
  const f=$('preview');
  if(!f)return;
  const name=template();
- const builder=window.ZAPIFY_TEMPLATE_BUILDER;
- $('previewStatus').textContent='Building live preview…';
- if(!builder||typeof builder.build!=='function'){
-   $('previewStatus').textContent='Preview engine unavailable';
-   showError('The live preview engine did not load. Refresh the page or redeploy the complete Zapify project.');
-   return;
- }
+ const templateUrl=`templates/${encodeURIComponent(name)}.html`;
+ $('previewStatus').textContent='Loading live template…';
  f.onload=()=>{
    $('previewStatus').textContent='Live · changes update instantly';
    send();
  };
- f.srcdoc=builder.build(name);
+ f.onerror=()=>{
+   $('previewStatus').textContent='Preview failed to load';
+   showError(`Could not load the ${name} template preview. Make sure the templates folder was deployed with the site.`);
+ };
+ // Use the real template document. This preserves its CSS, assets and runtime
+ // and avoids the old srcdoc builder, which generated an invalid runtime.
+ f.src=templateUrl;
 }
 function showError(msg){$('editorError').textContent=msg;$('editorError').classList.add('show');setTimeout(()=>$('editorError').classList.remove('show'),5000)}
 function page(){return scrapPages[selectedPage]}
