@@ -1,13 +1,10 @@
 {
-  "name": "zapify-designs-payments",
+  "name": "zapify-designs",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "Zapify Designs static website and browser-based Toolbox.",
   "scripts": {
-    "start": "node server/index.js",
-    "test": "node tests/catalog.test.js"
-  },
-  "dependencies": {
-    "express": "^5.1.0",
-    "cors": "^2.8.5"
+    "start": "node local-server.js",
+    "check": "node --check js/site.js && node --check js/toolbox.js && node --check js/hero3d.js && node --check js/zapify-os.js && node --check js/catalog-fallback.js"
   }
 }
