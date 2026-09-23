@@ -146,3 +146,7 @@ A real Yoco transaction requires the merchant's Yoco credentials and webhook con
 - The Digital Scrapbook has exactly 50 scrapbook-focused feature choices, including 35 included and 15 paid options.
 - The example environment file contains placeholders rather than a live secret key. Rotate any previously exposed Yoco secret before production use.
 - Yoco checkout creation includes a line item, metadata for reconciliation, an idempotency key, and a 30-second request timeout. Payment completion remains server-verified via Yoco checkout status/webhook.
+
+## Supabase backend migration
+
+A Supabase-ready backend is included under `supabase/`. It contains the Postgres schema/seed data, RLS policies, private Storage bucket policy, and Edge Functions for catalog access and Yoco checkout/payment handling. The existing Express server remains available for backwards compatibility during migration.

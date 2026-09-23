@@ -1,0 +1,13 @@
+project_id = "zapify"
+
+[functions.create-yoco-checkout]
+verify_jwt = false
+
+[functions.yoco-webhook]
+verify_jwt = false
+
+[functions.verify-yoco-checkout]
+verify_jwt = false
+
+[functions.catalog]
+verify_jwt = false
