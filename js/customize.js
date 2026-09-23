@@ -89,20 +89,26 @@ async function loadPreview(){
  const name=encodeURIComponent(template());
  const url=`templates/${name}.html?preview=1&t=${Date.now()}`;
  $('previewStatus').textContent='Loading live preview…';
- f.onload=()=>{send();$('previewStatus').textContent='Live · changes update instantly'};
- f.onerror=()=>{showError('The live preview could not be loaded. Check that the template files are deployed with the editor.');$('previewStatus').textContent='Preview unavailable'};
- // Fetch the template first and use srcdoc with an explicit <base>. This fixes
- // deployments where nested template assets resolve against customize.html.
  try{
-  const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('template unavailable');
+  // Build a completely self-contained iframe document. This avoids blank previews
+  // on hosts/CDNs that mishandle nested relative assets or iframe navigation.
+  const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw Error('template unavailable');
   let html=await r.text();
   const base=new URL('templates/',location.href).href;
   html=html.replace(/<head([^>]*)>/i,`<head$1><base href="${base}">`);
-  f.removeAttribute('src');
-  f.srcdoc=html;
+  const css=await fetch(`templates/template.css?v=${Date.now()}`,{cache:'no-store'}).then(x=>x.ok?x.text():'');
+  const js=await fetch(`templates/template-custom.js?v=${Date.now()}`,{cache:'no-store'}).then(x=>x.ok?x.text():'');
+  html=html.replace(/<link[^>]+href=["']template\.css["'][^>]*>/i,`<style data-zapify-template-css>${css}</style>`);
+  html=html.replace(/<script[^>]+src=["']template-custom\.js["'][^>]*><\/script>/i,`<script>${js}<\/script>`);
+  f.onload=()=>{send();$('previewStatus').textContent='Live · changes update instantly'};
+  f.onerror=()=>{throw Error('preview frame failed')};
+  f.removeAttribute('src'); f.srcdoc=html;
+  // srcdoc can fire load before the handler is attached in some browsers.
+  setTimeout(()=>{send(); if(f.srcdoc) $('previewStatus').textContent='Live · changes update instantly'},250);
  }catch(e){
-  f.removeAttribute('srcdoc');
-  f.src=url;
+  console.error('Zapify preview error',e);
+  $('previewStatus').textContent='Preview unavailable';
+  showError('The template preview could not be assembled. Make sure the templates folder was deployed with this editor.');
  }
 }
 function showError(msg){$('editorError').textContent=msg;$('editorError').classList.add('show');setTimeout(()=>$('editorError').classList.remove('show'),5000)}
