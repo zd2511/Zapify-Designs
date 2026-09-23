@@ -84,24 +84,22 @@ function updatePrice(){if(!catalog)return;const x=calculate();$('purchaseBase').
  const freeSelected=x.selected.length-paidSelected;
  $('priceHint').textContent=`${paidSelected} paid feature${paidSelected===1?'':'s'} · ${freeSelected} included feature${freeSelected===1?'':'s'} selected`}
 function send(){const c=config();localStorage.setItem('zapifyTemplatePreview',JSON.stringify(c));updatePrice();const f=$('preview');f?.contentWindow?.postMessage({type:'zapify-preview',config:c},'*')}
-async function loadPreview(){
+function loadPreview(){
  const f=$('preview');
  if(!f)return;
  const name=template();
- const url=`templates/${encodeURIComponent(name)}.html?preview=1&v=20260923-4`;
- $('previewStatus').textContent='Loading live preview…';
+ const builder=window.ZAPIFY_TEMPLATE_BUILDER;
+ $('previewStatus').textContent='Building live preview…';
+ if(!builder||typeof builder.build!=='function'){
+   $('previewStatus').textContent='Preview engine unavailable';
+   showError('The live preview engine did not load. Refresh the page or redeploy the complete Zapify project.');
+   return;
+ }
  f.onload=()=>{
    $('previewStatus').textContent='Live · changes update instantly';
-   // The real template is the preview. Send the current editor state only
-   // after the template's own script/CSS have finished loading.
    send();
  };
- f.onerror=()=>{
-   $('previewStatus').textContent='Preview unavailable';
-   showError(`Could not load templates/${name}.html. Check that the complete templates folder was deployed.`);
- };
- f.src='about:blank';
- requestAnimationFrame(()=>{ f.src=url; });
+ f.srcdoc=builder.build(name);
 }
 function showError(msg){$('editorError').textContent=msg;$('editorError').classList.add('show');setTimeout(()=>$('editorError').classList.remove('show'),5000)}
 function page(){return scrapPages[selectedPage]}
