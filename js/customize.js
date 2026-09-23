@@ -3,8 +3,17 @@ const defaults={salon:{business:'Lumi Beauty',headline:'Beautiful hair, made per
 const presetMap={salon:[['Blush','#e32976','#fff2f7','#19191f'],['Sage','#789b88','#f1f7f2','#17221b'],['Noir','#111','#f2f2f3','#111']],mechanic:[['Volt','#ffb44c','#111a20','#fff'],['Redline','#ef4b45','#211619','#fff'],['Electric','#38bdf8','#0d1820','#fff']],restaurant:[['Terracotta','#c56d4a','#f7eee7','#241713'],['Olive','#89956a','#f2f4e9','#20251a'],['Midnight','#9c7bd9','#17131e','#fff']],photographer:[['Mono','#111','#f1f1f1','#111'],['Rose','#d76a91','#fff1f7','#22151c'],['Cobalt','#4f78c8','#eef4ff','#101827']],construction:[['Safety','#e0ad2e','#202a22','#fff'],['Orange','#e56e32','#2c211c','#fff'],['Signal Blue','#4f8ebc','#152433','#fff']],scrapbook:[['Candy','#d65d92','#fff8fb','#2b1e27'],['Sunny','#d29b2f','#fff8df','#332a18'],['Ocean','#3f83a7','#edf8ff','#182a36']]};
 const ids=['customPaletteToggle','primaryColor','secondaryColor','accentColor','backgroundColor','textColor','fontFamily','headingFont','fontSize','buttonStyle','buttonColor','radius','shadow','spacing','navStyle','navPosition','stickyNav','transparentHeader','animations','pageTransitions','mobileDrawer','heroLayout','heroOverlay','showAbout','showServices','showGallery','showTestimonials','showFaq','showPricing','showContact','showNewsletter','showBlog','showTimeline','instagram','facebook','tiktok','youtube','footerText','imagePosition','lightbox','imageCaptions','seoTitle','seoDescription','noIndex','analyticsId','customCss','customSlug','whatsappButton','fullscreenMode','whatsapp','bookingUrl','mapsUrl','customDomain'];
 async function loadCatalog(){
- const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),6000);
- try{const r=await fetch(API_BASE+'/api/catalog',{cache:'no-store',signal:controller.signal});if(!r.ok)throw Error('Pricing service unavailable.');catalog=await r.json();return true}
+ // Always start from the bundled catalog so the editor works on static hosting
+ // even when the optional API/Supabase backend is not deployed yet.
+ catalog=window.ZAPIFY_CATALOG_FALLBACK||catalog;
+ const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),5000);
+ try{
+  const r=await fetch(API_BASE+'/api/catalog?ts='+Date.now(),{cache:'no-store',signal:controller.signal});
+  if(!r.ok)throw Error('Catalog API unavailable');
+  const remote=await r.json();
+  if(remote&&remote.templates&&Array.isArray(remote.addons)) catalog=remote;
+  return true;
+ }catch(e){ return false }
  finally{clearTimeout(timer)}
 }
 function template(){return $('template').value}function applyDefaults(){const d=defaults[template()];$('business').value=d.business;$('headline').value=d.headline;$('services').value=d.services;$('about').value=d.about;$('cta').value=d.cta;$('fontFamily').value=d.font;['headingFont','buttonStyle','navStyle','navPosition','heroLayout','imagePosition'].forEach(id=>{if($(id)&&!$(id).value)$(id).value=$(id).options[0].value});}
@@ -45,7 +54,9 @@ function readImage(file,cb){if(!file)return;if(!/^image\/(jpeg|png|webp|avif|svg
 function renderUploads(){const box=$('uploads');box.innerHTML='';[...images,...extraImages].forEach((v,i)=>{const extra=i>=5;const j=extra?i-5:i;const row=document.createElement('div');row.className='upload-row';row.innerHTML=`<label>Image ${i+1}${i===0?' · main':''}<input type="file" accept="image/jpeg,image/png,image/webp,image/avif"></label><button class="remove" type="button">Remove</button>`;box.appendChild(row);row.querySelector('input').onchange=()=>readImage(row.querySelector('input').files[0],val=>{if(extra)extraImages[j]=val;else images[j]=val;send()});row.querySelector('.remove').onclick=()=>{if(extra)extraImages.splice(j,1);else images[j]=null;renderUploads();send()}});updatePrice()}
 function renderAddons(){
  if(!catalog)return;
- const applicable=catalog.addons.filter(a=>a.templates==='all'||(Array.isArray(a.templates)&&a.templates.includes(template())));
+ const applicable=template()==='scrapbook'
+   ? catalog.addons.filter(a=>Array.isArray(a.templates)&&a.templates.includes('scrapbook'))
+   : catalog.addons.filter(a=>a.templates==='all');
  const groups={design:'Design',images:'Images',content:'Content',functionality:'Functionality',privacy:'Privacy',premium:'Premium',seo:'SEO',scrapbook:'Scrapbook'};
  $('addons').innerHTML=Object.entries(groups).map(([key,label])=>{
    const list=applicable.filter(a=>a.category===key);if(!list.length)return '';
@@ -73,13 +84,26 @@ function updatePrice(){if(!catalog)return;const x=calculate();$('purchaseBase').
  const freeSelected=x.selected.length-paidSelected;
  $('priceHint').textContent=`${paidSelected} paid feature${paidSelected===1?'':'s'} · ${freeSelected} included feature${freeSelected===1?'':'s'} selected`}
 function send(){const c=config();localStorage.setItem('zapifyTemplatePreview',JSON.stringify(c));updatePrice();const f=$('preview');f?.contentWindow?.postMessage({type:'zapify-preview',config:c},'*')}
-function loadPreview(){
+async function loadPreview(){
  const f=$('preview');
- const url=`templates/${encodeURIComponent(template())}.html?preview=1&t=${Date.now()}`;
+ const name=encodeURIComponent(template());
+ const url=`templates/${name}.html?preview=1&t=${Date.now()}`;
  $('previewStatus').textContent='Loading live preview…';
  f.onload=()=>{send();$('previewStatus').textContent='Live · changes update instantly'};
  f.onerror=()=>{showError('The live preview could not be loaded. Check that the template files are deployed with the editor.');$('previewStatus').textContent='Preview unavailable'};
- f.src=url;
+ // Fetch the template first and use srcdoc with an explicit <base>. This fixes
+ // deployments where nested template assets resolve against customize.html.
+ try{
+  const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('template unavailable');
+  let html=await r.text();
+  const base=new URL('templates/',location.href).href;
+  html=html.replace(/<head([^>]*)>/i,`<head$1><base href="${base}">`);
+  f.removeAttribute('src');
+  f.srcdoc=html;
+ }catch(e){
+  f.removeAttribute('srcdoc');
+  f.src=url;
+ }
 }
 function showError(msg){$('editorError').textContent=msg;$('editorError').classList.add('show');setTimeout(()=>$('editorError').classList.remove('show'),5000)}
 function page(){return scrapPages[selectedPage]}
