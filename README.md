@@ -12,7 +12,7 @@ This project is a rebuilt version of the supplied Zapify Designs website.
 - Templates marketplace with website templates and Digital Scrapbooks.
 - Live template customiser: colours, typography, text and images update without refresh.
 - Template pricing is centrally configured per template; 5 images are included and every additional image costs R15.
-- 48 working Scrapbook-specific customisation options.
+- 30 website features (15 included and 15 paid) plus 50 scrapbook-focused features (35 included and 15 paid).
 - Actual template previews use image assets rather than large empty placeholders.
 - "Zapify Template" branding removed from the customer-facing website template designs.
 - SEO metadata, canonical URLs, Open Graph tags, JSON-LD, robots.txt and sitemap.xml.
@@ -41,7 +41,7 @@ The frontend never receives `YOCO_SECRET_KEY`.
 
 Copy `.env.example` and configure the server:
 
-- `YOCO_PUBLIC_KEY` — public Yoco key.
+- `YOCO_PUBLIC_KEY` — public Yoco key (optional for hosted Checkout redirects).
 - `YOCO_SECRET_KEY` — private Yoco secret key.
 - `YOCO_WEBHOOK_SECRET` — webhook signing secret from the Yoco dashboard.
 - `PUBLIC_SITE_URL` — normally `https://zapifydesigns.co.za`.
@@ -136,3 +136,13 @@ A real Yoco transaction requires the merchant's Yoco credentials and webhook con
 - The live preview loads the actual template directly in an iframe (`templates/<template>.html`) and applies changes with `postMessage`.
 - The Yoco Checkout API request uses the currently documented `amount`, `currency`, redirect URLs, metadata, `clientReferenceId` and `externalId` fields; the browser never supplies the payable amount to Yoco.
 - If the frontend is hosted separately from the Node API, set `window.ZAPIFY_API_BASE` in `js/payment-config.js` to the API origin.
+
+
+## Builder fixes in this version
+
+- The editor initializes immediately from a local catalog fallback instead of waiting indefinitely for `/api/catalog`; the live catalog refreshes in the background when available.
+- Live previews use the real template URL directly in the iframe, avoiding blank `srcdoc` previews on static deployments.
+- Website feature pricing is server-enforced: 15 website features are included and 15 are paid; free features cannot add a charge.
+- The Digital Scrapbook has exactly 50 scrapbook-focused feature choices, including 35 included and 15 paid options.
+- The example environment file contains placeholders rather than a live secret key. Rotate any previously exposed Yoco secret before production use.
+- Yoco checkout creation includes a line item, metadata for reconciliation, an idempotency key, and a 30-second request timeout. Payment completion remains server-verified via Yoco checkout status/webhook.
