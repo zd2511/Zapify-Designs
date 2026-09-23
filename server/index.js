@@ -20,9 +20,13 @@ const PORT=process.env.PORT||3000;
 const SITE=(process.env.PUBLIC_SITE_URL||"https://zapifydesigns.co.za").replace(/\/$/,"");
 const YOCO_CHECKOUT_ENDPOINT=process.env.YOCO_CHECKOUT_ENDPOINT||"https://payments.yoco.com/api/checkouts";
 const ORDER_FILE=path.resolve(process.env.ORDER_STORE_PATH||"./data/orders.json");
-const allowedOrigin=process.env.CORS_ORIGIN||"*";
-
-app.use(cors({origin:allowedOrigin==="*"?"*":allowedOrigin}));
+const allowedOrigins=(process.env.CORS_ORIGIN||"*").split(",").map(v=>v.trim()).filter(Boolean);
+app.use(cors({
+ origin:(origin,callback)=>{
+  if(!origin||allowedOrigins.includes("*")||allowedOrigins.includes(origin)) return callback(null,true);
+  return callback(new Error("CORS origin not allowed"));
+ }
+}));
 
 function ensureStore(){const dir=path.dirname(ORDER_FILE);if(!fs.existsSync(dir))fs.mkdirSync(dir,{recursive:true});if(!fs.existsSync(ORDER_FILE))fs.writeFileSync(ORDER_FILE,"[]")}
 function readOrders(){ensureStore();return JSON.parse(fs.readFileSync(ORDER_FILE,"utf8")||"[]")}
