@@ -86,31 +86,20 @@ function updatePrice(){if(!catalog)return;const x=calculate();$('purchaseBase').
 function send(){const c=config();localStorage.setItem('zapifyTemplatePreview',JSON.stringify(c));updatePrice();const f=$('preview');f?.contentWindow?.postMessage({type:'zapify-preview',config:c},'*')}
 async function loadPreview(){
  const f=$('preview');
- const name=encodeURIComponent(template());
- const url=`templates/${name}.html?preview=1&t=${Date.now()}`;
+ const url=`templates/preview.html?template=${encodeURIComponent(template())}&t=${Date.now()}`;
  $('previewStatus').textContent='Loading live preview…';
- try{
-  // Build a completely self-contained iframe document. This avoids blank previews
-  // on hosts/CDNs that mishandle nested relative assets or iframe navigation.
-  const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw Error('template unavailable');
-  let html=await r.text();
-  const base=new URL('templates/',location.href).href;
-  html=html.replace(/<head([^>]*)>/i,`<head$1><base href="${base}">`);
-  const css=await fetch(`templates/template.css?v=${Date.now()}`,{cache:'no-store'}).then(x=>x.ok?x.text():'');
-  const js=await fetch(`templates/template-custom.js?v=${Date.now()}`,{cache:'no-store'}).then(x=>x.ok?x.text():'');
-  html=html.replace(/<link[^>]+href=["']template\.css["'][^>]*>/i,`<style data-zapify-template-css>${css}</style>`);
-  html=html.replace(/<script[^>]+src=["']template-custom\.js["'][^>]*><\/script>/i,`<script>${js}<\/script>`);
-  f.onload=()=>{send();$('previewStatus').textContent='Live · changes update instantly'};
-  f.onerror=()=>{throw Error('preview frame failed')};
-  f.removeAttribute('src'); f.srcdoc=html;
-  // srcdoc can fire load before the handler is attached in some browsers.
-  setTimeout(()=>{send(); if(f.srcdoc) $('previewStatus').textContent='Live · changes update instantly'},250);
- }catch(e){
-  console.error('Zapify preview error',e);
-  $('previewStatus').textContent='Preview unavailable';
-  showError('The template preview could not be assembled. Make sure the templates folder was deployed with this editor.');
- }
+ f.onload=()=>{
+   send();
+   $('previewStatus').textContent='Live · changes update instantly';
+ };
+ f.onerror=()=>{
+   $('previewStatus').textContent='Preview unavailable';
+   showError('The template preview could not be loaded. Make sure the complete templates folder is deployed.');
+ };
+ f.src=url;
+ setTimeout(()=>send(),500);
 }
+
 function showError(msg){$('editorError').textContent=msg;$('editorError').classList.add('show');setTimeout(()=>$('editorError').classList.remove('show'),5000)}
 function page(){return scrapPages[selectedPage]}
 function renderPages(){if(template()!=='scrapbook')return;const box=$('scrapPages');box.innerHTML=scrapPages.map((p,i)=>`<div class="scrap-page ${i===selectedPage?'active':''}"><button class="mini" data-page="${i}">${i+1}. ${p.title||'Memory page'}</button><div class="page-actions"><button class="mini" data-up="${i}">↑</button><button class="mini" data-down="${i}">↓</button></div></div>`).join('');box.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{selectedPage=+b.dataset.page;loadPageFields();renderPages();send()});box.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>movePage(+b.dataset.up,-1));box.querySelectorAll('[data-down]').forEach(b=>b.onclick=()=>movePage(+b.dataset.down,1))}
