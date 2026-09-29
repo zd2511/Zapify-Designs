@@ -1,0 +1,32 @@
+Zapify BusinessHub build notes
+==============================
+
+BusinessHub is a standalone front-end web app at /businesshub/.
+Current persistence:
+- Browser localStorage only.
+- No authentication, cloud database, payment gateway or messaging API is claimed.
+- This is intentional so the UI does not present demo functionality as production infrastructure.
+
+Implemented modules:
+- Dashboard
+- Invoices with calculations, statuses, logo upload, local history and jsPDF export
+- Visual PDF status stamps for PAID / OVERDUE / CANCELLED
+- Zapify Quote with PDF export and quote-to-invoice conversion
+- Customer-facing service estimate/enquiry calculator
+- Bookings and booking configuration UI
+- Customers
+- Forms and submission architecture/empty state
+- Business calculators: general, VAT and profit
+- Reviews interface
+- Settings / business profile
+- AI Business Assistant Coming Soon card
+
+Future production backend boundary:
+- Authentication and business accounts
+- Database persistence
+- Server-side PDF generation if required
+- Secure file storage
+- Email provider
+- WhatsApp Business API
+- Calendar integrations
+- Form submission endpoints

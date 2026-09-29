@@ -1,13 +1,7 @@
-SEO/AEO and UX refinement applied to the existing Zapify Designs site.
-
-- Homepage navigation now uses a dedicated Services page instead of “What We Offer”.
-- Homepage services are intentionally compact and expand on click/keyboard interaction.
-- Added visible Instagram, Facebook and LinkedIn social links to the homepage footer.
-- Organization structured data uses the confirmed Instagram profile as sameAs; Facebook/LinkedIn search pages are not claimed as official sameAs profiles.
-- Added FAQ structured data for the homepage questions to improve machine-readable answers; FAQ rich-result display is controlled by search engines and is not guaranteed.
-- Reworked the homepage hero into a CSS-built laptop/code-editor presentation showing HTML, CSS and JavaScript concepts.
-- Renamed the Zapify Bakery hero wording while keeping the visual food-focused concept.
-- Completely rebuilt the Zapify Technology demo as an interactive Experience Studio with live controls, component tests, typography, cursor controls and responsive UI concepts.
-- Sitemap now contains only indexable public pages and no longer references the removed Autozone demo or noindex portfolio demos.
-- robots.txt points to the canonical sitemap.
-- Existing design system, pricing, portfolio structure and other site functionality were preserved.
+SEO update notes — Zapify Designs
+- Main title/description language targets affordable website design, web development, SEO, maintenance, hosting, automation and software for South African businesses.
+- Home page includes natural South Africa service-area copy and ProfessionalService structured data with South African areaServed entries.
+- BusinessHub has a dedicated canonical URL and product-specific metadata.
+- Sitemap contains current public pages and removes retired product-commerce URLs.
+- Open Graph image references use /assets/og-image.png, which exists in the project.
+- Copy avoids ranking guarantees or keyword stuffing; search visibility still depends on indexing, content quality, authority, technical performance and competition.

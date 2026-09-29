@@ -1,6 +1,6 @@
 # Zapify Designs
 
-A static Zapify Designs website with a fully client-side **Zapify Toolbox**.
+A static Zapify Designs website with a fully client-side **Zapify BusinessHub**.
 
 ## Toolbox
 

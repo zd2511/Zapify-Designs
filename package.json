@@ -2,9 +2,9 @@
   "name": "zapify-designs",
   "private": true,
   "version": "2.0.0",
-  "description": "Zapify Designs static website and browser-based Toolbox.",
+  "description": "Zapify Designs website and Zapify BusinessHub business workspace.",
   "scripts": {
     "start": "node local-server.js",
-    "check": "node --check js/site.js && node --check js/toolbox.js && node --check js/hero3d.js && node --check js/zapify-os.js && node --check js/catalog-fallback.js"
+    "check": "node --check js/site.js && node --check js/hero3d.js && node --check js/zapify-os.js && node --check js/catalog-fallback.js && node --check businesshub/businesshub.js"
   }
 }
