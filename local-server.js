@@ -16,6 +16,15 @@ const server = http.createServer((req,res)=>{
     const file = safePath(req.url || '/');
     if (!file) return res.writeHead(403).end('Forbidden');
     fs.stat(file,(err,st)=>{
+      if (!err && st.isDirectory()) {
+        const indexFile=path.join(file,'index.html');
+        return fs.stat(indexFile,(indexErr,indexSt)=>{
+          if (indexErr || !indexSt.isFile()) return res.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'}).end('Not found');
+          const ext=path.extname(indexFile).toLowerCase();
+          res.writeHead(200,{'Content-Type':types[ext]||'application/octet-stream','Cache-Control':'no-cache'});
+          fs.createReadStream(indexFile).pipe(res);
+        });
+      }
       if (err || !st.isFile()) return res.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'}).end('Not found');
       const ext=path.extname(file).toLowerCase();
       res.writeHead(200,{'Content-Type':types[ext]||'application/octet-stream','Cache-Control':'no-cache'});

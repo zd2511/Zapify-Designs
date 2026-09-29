@@ -9,7 +9,7 @@ Current persistence:
 
 Implemented modules:
 - Dashboard
-- Invoices with calculations, statuses, logo upload, local history and jsPDF export
+- Invoices with calculations, statuses, logo upload, local history and internal PDF export
 - Visual PDF status stamps for PAID / OVERDUE / CANCELLED
 - Zapify Quote with PDF export and quote-to-invoice conversion
 - Customer-facing service estimate/enquiry calculator
