@@ -20,3 +20,7 @@ npm start
 
 Check:
 npm run check
+
+TEMPORARY CHATBOT NOTE
+----------------------
+For the temporary test requested by the owner, Zapify Bot currently includes a browser-side OpenAI API key in js/site.js. This is NOT secure for production because visitors can inspect frontend JavaScript. Rotate/revoke that key after testing and move the key back to Render/server environment variables.
