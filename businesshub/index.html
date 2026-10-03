@@ -1,7 +1,33 @@
-<!doctype html><html lang="en-ZA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zapify BusinessHub | Business Tools for South African Small Businesses</title><meta name="description" content="Zapify BusinessHub is a simple digital workspace for small businesses, with invoices, quotes, bookings, customers, forms and business calculators."><link rel="canonical" href="https://zapifydesigns.co.za/businesshub/"><meta name="theme-color" content="#3a8edb"><meta property="og:image" content="https://zapifydesigns.co.za/assets/og-image.png"><meta name="twitter:card" content="summary_large_image"><meta property="og:type" content="website"><meta property="og:site_name" content="Zapify Designs"><meta property="og:title" content="Zapify BusinessHub | Simple Digital Workspace for Small Businesses"><meta property="og:description" content="Invoices, quotes, bookings, customers, forms and business calculators in one simple workspace."><meta property="og:url" content="https://zapifydesigns.co.za/businesshub/"><link rel="stylesheet" href="businesshub.css"></head><body>
-<div class="bh-shell"><aside class="bh-sidebar"><a class="bh-brand" href="../index.html"><span>Zapify</span><b>BUSINESSHUB</b></a><div class="demo-note">DEMO WORKSPACE <small>Local browser storage · no account required</small></div><nav id="sideNav" aria-label="BusinessHub navigation">
-<button data-view="dashboard" class="active"><span>⌂</span>Dashboard</button><button data-view="invoices"><span>▤</span>Invoices</button><button data-view="quotes"><span>◫</span>Quotes</button><button data-view="bookings"><span>◷</span>Bookings</button><button data-view="forms"><span>□</span>Forms</button><button data-view="calculator"><span>∑</span>Calculator</button><button data-view="customers"><span>◎</span>Customers</button><button data-view="reviews"><span>★</span>Reviews</button><button data-view="settings"><span>⚙</span>Settings</button></nav><a class="back-site" href="../index.html">← Zapify Designs</a></aside>
-<main class="bh-main"><header class="bh-topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Open BusinessHub navigation">☰</button><div><div class="crumb">BusinessHub / <span id="viewLabel">Dashboard</span></div><h1 id="pageTitle">Good afternoon.</h1></div><div class="top-actions"><span class="demo-badge">DEMO MODE</span><button class="icon-btn" id="saveToast">✓ Saved locally</button></div></header>
-<section id="app"></section></main></div>
-<div id="modal" class="modal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div><div id="toast" class="toast" role="status"></div>
-<script src="businesshub.js"></script></body></html>
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zapify BusinessHub | Business Dashboard</title>
+<meta name="description" content="Zapify BusinessHub — interactive business dashboard with invoices, quotes, customers, expenses, budgets, calculators and downloadable PDFs.">
+<link rel="stylesheet" href="businesshub.css">
+</head>
+<body>
+<div class="bh-shell">
+<aside class="bh-sidebar" id="sidebar">
+  <a class="bh-brand" href="../index.html"><span>Zapify</span><b>BUSINESSHUB</b></a>
+  <div class="workspace"><span class="workspace-dot"></span><div><strong>My workspace</strong><small>Saved in this browser</small></div></div>
+  <nav id="sideNav" aria-label="BusinessHub navigation">
+    <button data-view="dashboard" class="active">⌂ <span>Dashboard</span></button>
+    <button data-view="invoices">▤ <span>Invoices</span></button>
+    <button data-view="quotes">◫ <span>Quotes</span></button>
+    <button data-view="customers">◎ <span>Customers</span></button>
+    <button data-view="expenses">− <span>Expenses</span></button>
+    <button data-view="budget">▥ <span>Budget</span></button>
+    <button data-view="calculator">∑ <span>Calculator</span></button>
+    <button data-view="settings">⚙ <span>Business settings</span></button>
+  </nav>
+  <div class="sidebar-bottom"><a href="../index.html">← Zapify Designs</a><button id="resetData">Reset workspace</button></div>
+</aside>
+<main class="bh-main">
+<header class="bh-topbar"><div class="top-left"><button class="mobile-menu" id="mobileMenu">☰</button><div><div class="crumb">BusinessHub / <span id="viewLabel">Dashboard</span></div><h1 id="pageTitle">Business dashboard</h1></div></div><div class="top-actions"><span class="save-state" id="saveState">● Saved locally</span><button class="top-chat" data-open-chat>Ask Zapify Bot</button></div></header>
+<section id="app"></section>
+</main></div>
+<div id="modal" class="modal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
+<div id="toast" class="toast" role="status"></div>
+<script src="businesshub.js"></script><script src="../js/site.js"></script>
+</body></html>

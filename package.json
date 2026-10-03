@@ -1,10 +1,7 @@
 {
-  "name": "zapify-designs",
-  "private": true,
-  "version": "2.0.0",
-  "description": "Zapify Designs website and Zapify BusinessHub business workspace.",
-  "scripts": {
-    "start": "node local-server.js",
-    "check": "node --check js/site.js && node --check js/hero3d.js && node --check js/catalog-fallback.js && node --check businesshub/businesshub.js"
-  }
+  "name":"zapify-designs",
+  "private":true,
+  "version":"3.0.0",
+  "description":"Zapify Designs website with a local-first BusinessHub and server-side Zapify Bot endpoint.",
+  "scripts":{"start":"node local-server.js","check":"node --check local-server.js && node --check js/site.js && node --check js/hero3d.js && node --check js/catalog-fallback.js && node --check businesshub/businesshub.js"}
 }

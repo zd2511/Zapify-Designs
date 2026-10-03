@@ -1,12 +1,22 @@
-ZAPIFY DESIGNS WEBSITE UPDATE
+ZAPIFY DESIGNS — OCTOBER 2026 BUILD
 
-Updated September 2026.
+BusinessHub was rebuilt as an interactive local-first business workspace.
 
-Highlights:
-- Homepage now explains full-stack development and links to services.html.
-- Service cards expand on click/tap.
-- Added frontend/backend/admin dashboard/database/API explanations.
-- Updated Hair Studio, IT/CYBER, Nail Studio, Boutique, Bakery and Scrapbook demos.
-- Added SEO metadata, canonical URL, structured data and sitemap entries.
+Includes:
+- Dashboard
+- Invoice maker + downloadable branded PDF
+- Quote maker + downloadable branded PDF
+- Logo and stamp uploads embedded into PDFs
+- Customers
+- Expenses
+- Budget
+- VAT, profit, markup, break-even and budget calculators
+- Business settings and payment details
 
-Note: some demo photography uses remote image URLs from Unsplash. The browser needs internet access to display those remote photographs. Existing local demo assets remain bundled.
+Zapify Bot is available site-wide. Configure OPENAI_API_KEY on the server before using the AI chat endpoint.
+
+Run:
+npm start
+
+Check:
+npm run check

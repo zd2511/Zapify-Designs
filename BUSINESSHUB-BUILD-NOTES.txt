@@ -1,32 +1,24 @@
-Zapify BusinessHub build notes
-==============================
+Zapify BusinessHub — rebuilt October 2026
 
-BusinessHub is a standalone front-end web app at /businesshub/.
-Current persistence:
-- Browser localStorage only.
-- No authentication, cloud database, payment gateway or messaging API is claimed.
-- This is intentional so the UI does not present demo functionality as production infrastructure.
+BusinessHub is now a fully interactive local-first workspace rather than a demo dashboard.
 
-Implemented modules:
-- Dashboard
-- Invoices with calculations, statuses, logo upload, local history and internal PDF export
-- Visual PDF status stamps for PAID / OVERDUE / CANCELLED
-- Zapify Quote with PDF export and quote-to-invoice conversion
-- Customer-facing service estimate/enquiry calculator
-- Bookings and booking configuration UI
-- Customers
-- Forms and submission architecture/empty state
-- Business calculators: general, VAT and profit
-- Reviews interface
-- Settings / business profile
-- AI Business Assistant Coming Soon card
+Modules:
+- Dashboard with live calculations from saved records
+- Invoice maker with line items, VAT, discounts, payment status, live preview and downloadable PDF
+- Quote maker with live preview, downloadable PDF and quote-to-invoice conversion
+- Logo upload and business stamp upload; uploaded images are compressed and embedded in generated PDFs
+- Customer management
+- Expense tracking
+- Monthly budget and category analysis
+- General calculator, VAT calculator, profit calculator, markup/margin, break-even and budget variance
+- Business profile and bank/payment details
 
-Future production backend boundary:
-- Authentication and business accounts
-- Database persistence
-- Server-side PDF generation if required
-- Secure file storage
-- Email provider
-- WhatsApp Business API
-- Calendar integrations
-- Form submission endpoints
+Storage:
+- localStorage only; no Supabase or Yoco dependency
+- uploaded branding is stored in the current browser
+
+Zapify Bot:
+- global chat UI is injected by js/site.js on public pages and BusinessHub
+- POST /api/chat is served by local-server.js
+- OPENAI_API_KEY must be supplied as a server environment secret
+- no API key is stored in frontend source
