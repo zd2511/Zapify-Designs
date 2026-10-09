@@ -1,32 +1,3 @@
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const WA='27743899657';
-function quoteUrl(service='Website'){return `https://wa.me/${WA}?text=${encodeURIComponent(`Hi Zapify Designs! I'm interested in ${service}. I'd like to discuss the service and pricing.`)}`}
-function init(){
- const header=$('.site-header'); window.addEventListener('scroll',()=>header?.classList.toggle('scrolled',scrollY>20),{passive:true});
- const menu=$('.menu'),nav=$('.mobile-nav'); menu?.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',open)});
- $$('.reveal').forEach(el=>{if(!('IntersectionObserver'in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)el.classList.add('visible');else new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1}).observe(el)});
- $$('.quote-link').forEach(a=>a.addEventListener('click',e=>{const s=a.dataset.service;if(s){e.preventDefault();window.open(quoteUrl(s),'_blank','noopener')}}));
- initCursor();initFAQ();initChat();
- const params=new URLSearchParams(location.search),svc=params.get('service');if(svc&&$('#service'))$('#service').value=svc;
-}
-function initCursor(){if(matchMedia('(pointer:coarse)').matches||$('.bh-shell'))return;let c=$('.cursor'),r=$('.cursor-ring');if(!c){c=document.createElement('span');c.className='cursor';document.body.appendChild(c)}if(!r){r=document.createElement('span');r.className='cursor-ring';document.body.appendChild(r)}addEventListener('pointermove',e=>{c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';c.classList.add('cursor-on');r.classList.add('cursor-on')},{passive:true});const bind=()=>$$('a,button,input,select,textarea,[data-cursor]').forEach(el=>{el.addEventListener('mouseenter',()=>r.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>r.classList.remove('cursor-hover'))});bind()}
-function initFAQ(){$$('.faq details').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)$$('.faq details').forEach(x=>{if(x!==d)x.open=false})}))}
-async function askZapify(messages,page){
- const response=await fetch(window.ZAPIFY_CHAT_ENDPOINT||'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages,page:page||location.pathname})});
- const data=await response.json().catch(()=>({}));
- if(!response.ok)throw new Error(data?.error||'Chat service unavailable');
- return String(data.answer||'');
-}
-
-function initChat(){
- if($('#zapifyBot'))return;
- const root=document.createElement('div');root.id='zapifyBot';root.innerHTML=`<button class="zap-bot-toggle" aria-label="Open Zapify Bot"><span class="zap-bot-dot"></span><span>Zapify Bot</span></button><section class="zap-bot-panel" aria-label="Zapify Bot chat"><header><div><strong>Zapify Bot</strong><small>Zapify Designs assistant</small></div><button class="zap-bot-close" aria-label="Close chat">×</button></header><div class="zap-bot-messages"></div><div class="zap-bot-suggestions"><button>What services do you offer?</button><button>How much does a website cost?</button><button>Can you build business software?</button></div><form class="zap-bot-form"><input class="zap-bot-input" autocomplete="off" placeholder="Ask Zapify Bot anything…"><button class="zap-bot-send" type="submit">Send</button></form></section>`;document.body.appendChild(root);
- const toggle=$('.zap-bot-toggle',root),panel=$('.zap-bot-panel',root),close=$('.zap-bot-close',root),form=$('.zap-bot-form',root),input=$('.zap-bot-input',root),messages=$('.zap-bot-messages',root),suggestions=$$('.zap-bot-suggestions button',root);let history=[];
- const add=(text,who='bot',busy=false)=>{const d=document.createElement('div');d.className=`zap-msg ${who}${busy?' busy':''}`;d.textContent=text;messages.appendChild(d);messages.scrollTop=messages.scrollHeight;return d};
- add('Hi! I’m Zapify Bot. Ask me about Zapify Designs, websites, SEO, software, BusinessHub, pricing or starting a project.');
- toggle.onclick=()=>{panel.classList.toggle('open');if(panel.classList.contains('open'))input.focus()};close.onclick=()=>panel.classList.remove('open');
- const send=async text=>{if(!text)return;add(text,'user');input.value='';const pending=add('Thinking…','bot',true);try{const conversation=[...history,{role:'user',content:text}];const answer=await askZapify(conversation,location.pathname);pending.remove();add(answer);history.push({role:'user',content:text},{role:'assistant',content:answer});history=history.slice(-12)}catch(err){pending.remove();add('Zapify Bot could not connect right now. Please contact Zapify Designs directly.');console.error(err)}};
- form.onsubmit=e=>{e.preventDefault();send(input.value.trim())};suggestions.forEach(b=>b.onclick=()=>send(b.textContent.trim()));
- document.addEventListener('click',e=>{if(e.target.closest('[data-open-chat]')){panel.classList.add('open');input.focus()}});
-}
+function init(){const header=$('.site-header');window.addEventListener('scroll',()=>header?.classList.toggle('scrolled',scrollY>20),{passive:true});const menu=$('.menu'),nav=$('.mobile-nav');menu?.addEventListener('click',()=>{const open=nav?.classList.toggle('open');menu.setAttribute('aria-expanded',String(!!open))});$$('.reveal').forEach(el=>{if(!('IntersectionObserver'in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)el.classList.add('visible');else new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1}).observe(el)});$$('.faq details').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)$$('.faq details').forEach(x=>{if(x!==d)x.open=false})}));const params=new URLSearchParams(location.search),svc=params.get('service');if(svc&&$('#service'))$('#service').value=svc;}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
