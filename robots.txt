@@ -1,6 +1,1 @@
-User-agent: *
-Allow: /
-Disallow: /server/
-Disallow: /data/
-Disallow: /user-uploads/
-Sitemap: https://zapifydesigns.co.za/sitemap.xml
+User-agent: *\nAllow: /\nDisallow: /businesshub/\nDisallow: /demo/client-dashboard/\nSitemap: https://zapifydesigns.co.za/sitemap.xml\n

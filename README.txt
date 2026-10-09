@@ -1,25 +1,27 @@
-ZAPIFY DESIGNS — OCTOBER 2026 BUILD
+ZAPIFY DESIGNS — WEBSITE PACKAGE
 
-BusinessHub was rebuilt as an interactive local-first business workspace.
+Stack: static HTML, CSS and JavaScript, with an optional lightweight Node.js static file server.
+No framework migration or package install is required.
 
-Includes:
-- Dashboard
-- Invoice maker + downloadable branded PDF
-- Quote maker + downloadable branded PDF
-- Logo and stamp uploads embedded into PDFs
-- Customers
-- Expenses
-- Budget
-- VAT, profit, markup, break-even and budget calculators
-- Business settings and payment details
+Local preview:
+  node local-server.js
+Then visit http://127.0.0.1:8080
 
-Zapify Bot is available site-wide. Configure OPENAI_API_KEY on the server before using the AI chat endpoint.
+Syntax checks:
+  npm run check
 
-Run:
-npm start
+Main pages:
+  index.html, services.html, agency-partner.html, projects.html, packages.html, about.html, contact.html
 
-Check:
-npm run check
+Existing portfolio demos remain in demo/ and each has its own HTML/CSS/JavaScript implementation.
+The new demo is demo/client-dashboard/. It uses fictional data and client-side state only.
+BusinessHub and product pages remain included.
 
-----------------------
-For the temporary test requested by the owner, Zapify Bot currently includes a browser-side OpenAI API key in js/site.js. This is NOT secure for production because visitors can inspect frontend JavaScript. Rotate/revoke that key after testing and move the key back to Render/server environment variables.
+Enquiry form:
+The contact form validates required fields and prepares a mailto message. It requires the visitor to send the email from their mail application; no server-side form submission is configured.
+
+Launch checks still required:
+- Verify official social profile URLs (Facebook and LinkedIn links are intentionally generic where the profile URL was not confirmed).
+- Confirm production domain and canonical/sitemap deployment path.
+- Configure a real form backend only if server-side submissions are required.
+- Validate all third-party payment/API access and credentials before describing those integrations as live.

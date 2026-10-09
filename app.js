@@ -72,31 +72,7 @@
     window.open(url, '_blank', 'noopener');
   });
 
-  // Lightweight structured FAQ chatbot. Replace answer() with a real API call later if desired.
-  const chatToggle = $('.chat-toggle'), chatPanel = $('#chat-panel'), chatClose = $('.chat-close'), chatMessages = $('#chat-messages'), chatForm = $('#chat-form'), chatInput = $('#chat-input');
-  const openChat = () => { chatPanel?.classList.add('open'); chatPanel?.setAttribute('aria-hidden','false'); chatToggle?.setAttribute('aria-expanded','true'); setTimeout(() => chatInput?.focus(), 120); };
-  const closeChat = () => { chatPanel?.classList.remove('open'); chatPanel?.setAttribute('aria-hidden','true'); chatToggle?.setAttribute('aria-expanded','false'); };
-  chatToggle?.addEventListener('click', () => chatPanel.classList.contains('open') ? closeChat() : openChat());
-  chatClose?.addEventListener('click', closeChat);
-  const addMessage = (text, who='bot') => { const div=document.createElement('div'); div.className=who==='user'?'user-message':'bot-message'; div.textContent=text; chatMessages.appendChild(div); chatMessages.scrollTop=chatMessages.scrollHeight; };
-  const answer = q => {
-    const s=q.toLowerCase();
-    if (s.includes('price') || s.includes('cost') || s.includes('package')) return 'Website packages start at R800. Starter is R1,250, Premium R2,100 and Professional R3,500. Custom software and larger systems are quoted around scope.';
-    if (s.includes('service')) return 'Zapify Designs offers website development, SEO, maintenance, hosting, analytics, marketing, automation, AI and custom software development.';
-    if (s.includes('seo') || s.includes('google')) return 'SEO can include technical setup, on-page SEO, sitemaps, Search Console, Bing Webmaster Tools, local SEO foundations and monitoring. Rankings are never guaranteed.';
-    if (s.includes('maintenance') || s.includes('fix') || s.includes('update')) return 'Yes. Maintenance can cover content updates, bug fixes, performance work, security checks, backups and ongoing support. Packages are quoted around the work.';
-    if (s.includes('hosting') || s.includes('domain')) return 'We can assist with domain registration, DNS, hosting, deployment, SSL/HTTPS and business email setup.';
-    if (s.includes('software') || s.includes('dashboard') || s.includes('crm')) return 'Yes. Custom work can include SaaS apps, dashboards, CRM-style systems, inventory, customer portals, databases and APIs.';
-    if (s.includes('ai') || s.includes('automation') || s.includes('chatbot')) return 'We can build structured AI interfaces, chatbots and automated workflows. A real AI provider/API would need to be configured for live AI generation.';
-    if (s.includes('quote') || s.includes('project') || s.includes('start')) { setTimeout(() => document.querySelector('#contact')?.scrollIntoView({behavior:'smooth'}), 250); return 'Absolutely. I can take you to the quote form. Tell us what you need and the form will prepare a WhatsApp enquiry.'; }
-    if (s.includes('whatsapp') || s.includes('contact')) return 'You can WhatsApp Zapify Designs on 074 389 9657 or email zapifydesigns@gmail.com. You can also use the quote form on this page.';
-    return 'I can help with services, pricing, SEO, maintenance, hosting, software, AI or starting a project. Try one of the suggested questions below.';
-  };
-  const handleChat = q => { if (!q.trim()) return; addMessage(q,'user'); chatInput.value=''; setTimeout(()=>addMessage(answer(q)),250); };
-  chatForm?.addEventListener('submit', e => { e.preventDefault(); handleChat(chatInput.value); });
-  $$('.chat-suggestions button').forEach(b => b.addEventListener('click', () => { openChat(); handleChat(b.dataset.question); }));
-
-  // Product concept modals: interactive enough to demonstrate each concept without pretending a backend exists.
+  // Zapify AI/chat widget removed by design; no chat UI or API integration is initialized.\n\n  // Product concept modals: interactive enough to demonstrate each concept without pretending a backend exists.
   const modal = $('#demo-modal'), modalContent = $('#modal-content');
   const demos = {
     os: `<div class="modal-inner"><p class="section-kicker pink">ZAPIFY OS · CONCEPT</p><h3>Your business, in one place.</h3><p>This interactive prototype shows the kind of dashboard Zapify Designs could build. Click a module to change the overview label.</p><div class="demo-action-grid">${['Overview','Customers','Quotes','Invoices','Bookings','Products','Website','Marketing','Settings'].map(x=>`<button type="button" data-os-tab="${x}">${x}<br><small>Open ${x.toLowerCase()}</small></button>`).join('')}</div><p id="demo-feedback" style="margin-top:18px;color:#f22b8f;font-weight:800">Overview selected.</p></div>`,
