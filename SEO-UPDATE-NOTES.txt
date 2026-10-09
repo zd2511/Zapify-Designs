@@ -1,7 +1,1 @@
-SEO update notes — Zapify Designs
-- Main title/description language targets affordable website design, web development, SEO, maintenance, hosting, automation and software for South African businesses.
-- Home page includes natural South Africa service-area copy and ProfessionalService structured data with South African areaServed entries.
-- BusinessHub has a dedicated canonical URL and product-specific metadata.
-- Sitemap contains current public pages and removes retired product-commerce URLs.
-- Open Graph image references use /assets/og-image.png, which exists in the project.
-- Copy avoids ranking guarantees or keyword stuffing; search visibility still depends on indexing, content quality, authority, technical performance and competition.
+SEO implementation notes: primary public pages have unique titles, descriptions, canonical URLs on the configured production domain, Open Graph metadata, and an Organization/WebSite schema is not fabricated where not needed. Sitemap includes verified primary pages and excludes private/demo routes. Confirm production domain and route policy before launch.

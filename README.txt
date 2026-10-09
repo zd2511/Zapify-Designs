@@ -21,7 +21,7 @@ Enquiry form:
 The contact form validates required fields and prepares a mailto message. It requires the visitor to send the email from their mail application; no server-side form submission is configured.
 
 Launch checks still required:
-- Verify official social profile URLs (Facebook and LinkedIn links are intentionally generic where the profile URL was not confirmed).
+- Verify official Facebook and Instagram profile URLs.
 - Confirm production domain and canonical/sitemap deployment path.
 - Configure a real form backend only if server-side submissions are required.
 - Validate all third-party payment/API access and credentials before describing those integrations as live.

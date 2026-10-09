@@ -1,0 +1,29 @@
+ZAPIFY DESIGNS — REVISION REPORT
+Date: 9 October 2026
+
+CHANGES IN THIS REVISION
+- Removed the legacy template storefront and its dedicated cart page.
+- Removed the Autozone and Technology portfolio demo directories and their portfolio cards.
+- Removed stale navigation references to the deleted storefront and old template modal logic.
+- Reworked the main site's visual layout toward a warmer editorial aesthetic: ivory backgrounds, stronger asymmetry, less rounded geometry, restrained gold accents, and revised responsive spacing.
+- Restyled the client dashboard login and portal screens to match the updated aesthetic.
+- Fixed the portal's visibility bug: CSS display rules overrode the HTML hidden attribute, causing the login and dashboard views to overlap / fail to switch correctly. Added an explicit [hidden] display rule and verified JavaScript syntax.
+- Retained the remaining standalone demos, including the client dashboard demo and other existing portfolio projects.
+
+TESTS PERFORMED
+- `node --check app.js` — passed.
+- `node --check demo/client-dashboard/dashboard.js` — passed.
+- `node --check local-server.js` — passed.
+- Searched source files for the exact removed brand names and their demo paths — no matches found.
+- Confirmed the updated local server serves the client dashboard route with HTTP 200.
+- The attempted automated Chromium browser run was blocked by the environment's browser administrator policy, so click-through visual QA and full interaction testing could not be completed in this environment.
+
+PORTAL DEMO DETAILS
+- Demo entry bypasses credentials; sample login remains available with email demo@zapify.example and password demopass123.
+- Data is fictional and client-side only. Profile changes remain in the demo session.
+- Invoice download creates a downloadable HTML sample invoice; document downloads create sample text files.
+- No real credentials or client data are collected.
+
+LAUNCH / LIMITATIONS
+- Confirm production domain, social profile destinations, contact form delivery service, and third-party API credentials before launch.
+- Test the updated ZIP in a normal browser and on real phone/tablet sizes before production deployment.
