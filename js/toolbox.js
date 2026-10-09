@@ -157,7 +157,7 @@
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = 256;
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#171717'; ctx.fillRect(0,0,256,256);
-    ctx.fillStyle = '#f22b8f'; ctx.font = '900 150px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text,128,135);
+    ctx.fillStyle = '#c8923a'; ctx.font = '900 150px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text,128,135);
     canvas.toBlob(blob => {
       const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='favicon.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
       result('favR', `<img class="favicon-preview" src="${url}" alt="Generated favicon preview"><strong>Favicon downloaded.</strong>`);
