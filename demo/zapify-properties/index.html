@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071225">
+  <meta name="description" content="Discover exceptional homes and property opportunities with Zapify Properties.">
+  <title>Zapify Properties | Find your place to thrive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="address-bar"><span>zapifyproperties.co.za</span><span class="refresh">↻</span></div>
+      <div class="browser-actions"><span>＋</span><span>▢</span></div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-image"></div>
+        <div class="hero-shade"></div>
+        <nav class="nav">
+          <a class="brand" href="#home" aria-label="Zapify Properties home">
+            <span class="brand-mark">Z</span><span class="brand-words"><strong>ZAPIFY</strong><small>PROPERTIES</small></span>
+          </a>
+          <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+          <div class="nav-links">
+            <a href="#properties">Properties</a><a href="#buy">Buy</a><a href="#sell">Sell</a><a href="#about">About</a><a href="#resources">Resources</a>
+          </div>
+          <a class="button button-gold nav-cta" href="#consult">Book a Consultation <span class="round-arrow">↗</span></a>
+        </nav>
+
+        <div class="hero-copy">
+          <p class="eyebrow">FIND MORE THAN A HOME.</p>
+          <h1>Find your<br><em>place</em><br>to thrive.</h1>
+          <p class="hero-description">Curated properties. Expert guidance.<br>Extraordinary living.</p>
+          <div class="hero-actions">
+            <a class="button button-gold" href="#properties">Explore Properties <span>→</span></a>
+            <button class="watch-button" id="watch-video"><span class="play">▶</span> Watch Video</button>
+          </div>
+        </div>
+
+        <article class="spotlight">
+          <p class="eyebrow">EXCLUSIVE LISTING</p>
+          <h2>The Hillside Estate</h2>
+          <p class="location">⌖ Constantia, Cape Town</p>
+          <div class="stats">
+            <div><span>▱ &nbsp;5</span><small>Beds</small></div>
+            <div><span>♧ &nbsp;6</span><small>Baths</small></div>
+            <div><span>↗ &nbsp;670 m²</span><small>Floor Area</small></div>
+          </div>
+          <div class="spotlight-bottom"><strong>R 14,500,000</strong><a href="#properties" aria-label="View property">View Property <span class="round-arrow">→</span></a></div>
+        </article>
+
+        <form class="search-panel" id="property-search">
+          <label class="search-icon" aria-hidden="true">⌕</label>
+          <label class="filter-field"><span>LOCATION</span><select id="location-filter"><option value="">Any Location</option><option>Cape Town</option><option>Johannesburg</option><option>Durban</option><option>Pretoria</option><option>Stellenbosch</option></select></label>
+          <label class="filter-field"><span>PROPERTY TYPE</span><select id="type-filter"><option value="">Any Type</option><option>House</option><option>Apartment</option><option>Villa</option></select></label>
+          <label class="filter-field"><span>PRICE RANGE</span><select id="price-filter"><option value="">Any Price</option><option value="0-3000000">Under R3m</option><option value="3000000-7000000">R3m – R7m</option><option value="7000000-15000000">R7m – R15m</option><option value="15000000-999999999">R15m+</option></select></label>
+          <button class="button button-gold search-submit" type="submit">Search Properties <span>⌕</span></button>
+        </form>
+      </section>
+
+      <section class="properties-section section-wrap" id="properties">
+        <div class="section-heading">
+          <div><p class="eyebrow">FEATURED PROPERTIES</p><h2>Exceptional homes.<br><em>Extraordinary lifestyles.</em></h2></div>
+          <a class="text-link" href="#properties">View all properties <span>→</span></a>
+        </div>
+        <p class="results-note" id="results-note" aria-live="polite"></p>
+        <div class="property-grid" id="property-grid">
+          <article class="property-card" data-location="Durban" data-type="Villa" data-price="8950000">
+            <div class="property-image"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="Contemporary oceanfront villa" onerror="this.src='https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85'"><span class="status">FOR SALE</span><button class="favorite" aria-label="Save Oceanfront Villa">♡</button></div>
+            <div class="property-info"><h3>Oceanfront Villa</h3><p class="property-location">⌖ Umhlanga, Durban</p><div class="mini-stats"><span>▱ 4 <small>Beds</small></span><span>♧ 4.5 <small>Baths</small></span><span>↗ 474 m² <small>Floor</small></span></div><strong class="price">R 8,950,000</strong></div>
+          </article>
+          <article class="property-card" data-location="Johannesburg" data-type="Apartment" data-price="4250000">
+            <div class="property-image"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85" alt="Luxury city penthouse interior"><span class="status">FOR SALE</span><button class="favorite" aria-label="Save Skyline Penthouse">♡</button></div>
+            <div class="property-info"><h3>Skyline Penthouse</h3><p class="property-location">⌖ Sandton, Johannesburg</p><div class="mini-stats"><span>▱ 3 <small>Beds</small></span><span>♧ 3.5 <small>Baths</small></span><span>↗ 316 m² <small>Floor</small></span></div><strong class="price">R 4,250,000</strong></div>
+          </article>
+          <article class="property-card" data-location="Cape Town" data-type="House" data-price="25000">
+            <div class="property-image"><img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=900&q=85" alt="Modern glass house surrounded by greenery"><span class="status rent">FOR RENT</span><button class="favorite" aria-label="Save Lakeside Retreat">♡</button></div>
+            <div class="property-info"><h3>Lakeside Retreat</h3><p class="property-location">⌖ Constantia, Cape Town</p><div class="mini-stats"><span>▱ 4 <small>Beds</small></span><span>♧ 3 <small>Baths</small></span><span>↗ 280 m² <small>Floor</small></span></div><strong class="price">R 25,000 <small>/ month</small></strong></div>
+          </article>
+          <article class="property-card" data-location="Pretoria" data-type="House" data-price="6750000">
+            <div class="property-image"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=85" alt="Warm modern home with landscaped courtyard"><span class="status">FOR SALE</span><button class="favorite" aria-label="Save Desert Modern">♡</button></div>
+            <div class="property-info"><h3>Desert Modern</h3><p class="property-location">⌖ Waterkloof, Pretoria</p><div class="mini-stats"><span>▱ 5 <small>Beds</small></span><span>♧ 5.5 <small>Baths</small></span><span>↗ 520 m² <small>Floor</small></span></div><strong class="price">R 6,750,000</strong></div>
+          </article>
+        </div>
+        <div class="carousel-controls"><span class="active-line"></span><button aria-label="Page 2" class="dot"></button><button aria-label="Page 3" class="dot"></button><button aria-label="Page 4" class="dot"></button></div>
+      </section>
+
+      <section class="benefits section-wrap" id="about">
+        <a class="benefit-card" href="#consult"><span class="benefit-icon">◇</span><h3>Expert Guidance</h3><p>Local expertise and market insights you can trust.</p><span class="benefit-arrow">→</span></a>
+        <a class="benefit-card" href="#properties"><span class="benefit-icon">⌂</span><h3>Curated Listings</h3><p>Handpicked properties that match your lifestyle.</p><span class="benefit-arrow">→</span></a>
+        <a class="benefit-card" href="#consult"><span class="benefit-icon">⚿</span><h3>Seamless Experience</h3><p>From search to signature, we're with you.</p><span class="benefit-arrow">→</span></a>
+        <a class="benefit-card" href="#resources"><span class="benefit-icon">▥</span><h3>Smart Investment</h3><p>Build wealth with strategic real estate decisions.</p><span class="benefit-arrow">→</span></a>
+      </section>
+
+      <section class="lower-cta section-wrap" id="consult">
+        <div><p class="eyebrow">YOUR NEXT CHAPTER STARTS HERE</p><h2>Let's find a place<br><em>that feels like you.</em></h2></div>
+        <a class="button button-gold" href="mailto:hello@zapifyproperties.co.za">Book a Consultation <span>↗</span></a>
+      </section>
+    </main>
+    <footer><a class="brand" href="#home"><span class="brand-mark">Z</span><span class="brand-words"><strong>ZAPIFY</strong><small>PROPERTIES</small></span></a><p>Exceptional property. Personal service.</p><span>© 2026 Zapify Properties</span></footer>
+  </div>
+  <div class="modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden><div class="modal-card"><button class="modal-close" aria-label="Close">×</button><p class="eyebrow">ZAPIFY PROPERTIES</p><h2 id="modal-title">Find your place to thrive.</h2><p>Thoughtful property guidance, carefully selected homes, and a smoother journey from first viewing to final signature.</p><a class="button button-gold" href="#consult">Let's talk <span>→</span></a></div></div>
+  <script src="script.js"></script>
+</body>
+</html>
