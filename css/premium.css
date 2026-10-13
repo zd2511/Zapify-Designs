@@ -97,3 +97,16 @@ body:has(.hero) .hero .eyebrow{max-width:100%;flex-wrap:wrap;line-height:1.7}
  .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px}
 }
 @media(max-width:370px){.grid,.project-grid{grid-template-columns:1fr}.service-thumb{height:120px}.brand-logo{width:124px}}
+
+/* Zapify refinement: restrained polish while preserving the original palette and illustrations */
+:root { scroll-behavior: smooth; }
+::selection { background: rgba(218,177,82,.32); color: inherit; }
+.zx-header { backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.card, .project-card { transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease; }
+.card:hover, .project-card:hover { transform: translateY(-4px); }
+.btn, .zx-cta, .text-link { transition: transform .22s ease, opacity .22s ease, background-color .22s ease; }
+.btn:hover, .zx-cta:hover { transform: translateY(-2px); }
+.project-card .thumb { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
