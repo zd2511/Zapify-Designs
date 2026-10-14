@@ -1,2 +1,24 @@
-const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.12});document.querySelectorAll('section,article,.show-image,.show-title').forEach((el,i)=>{el.classList.add('reveal');el.style.transitionDelay=(i%5)*.06+'s';io.observe(el)});
-const par=document.querySelector('[data-parallax]');window.addEventListener('scroll',()=>{const y=scrollY;if(par)par.style.transform=`translate3d(0,${y*.045}px,0) scale(1.06)`;document.querySelectorAll('.show-image').forEach((el,i)=>{const r=el.parentElement.getBoundingClientRect();const p=Math.max(-80,Math.min(80,(innerHeight/2-r.top)*.035*(i+1)));el.style.translate=`0 ${p}px`})},{passive:true});
+const menuButton = document.querySelector('.menu-toggle');
+const nav = document.querySelector('.nav');
+menuButton.addEventListener('click', () => {
+  const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+  menuButton.setAttribute('aria-expanded', String(!expanded));
+  nav.classList.toggle('open', !expanded);
+});
+nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+  nav.classList.remove('open');
+  menuButton.setAttribute('aria-expanded', 'false');
+}));
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('contact-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  const name = String(data.get('name') || '').trim();
+  const email = String(data.get('email') || '').trim();
+  const phone = String(data.get('phone') || '').trim();
+  const message = String(data.get('message') || '').trim();
+  const subject = encodeURIComponent(`Photography enquiry from ${name}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`);
+  document.getElementById('form-note').textContent = 'Your email app will open so you can send your enquiry.';
+  window.location.href = `mailto:hello@zapify.co.za?subject=${subject}&body=${body}`;
+});
