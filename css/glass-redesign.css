@@ -1,0 +1,41 @@
+
+/* Zapify Designs — glassmorphism UI/UX refresh inspired by supplied Dribbble reference.
+   Existing page copy, navigation, links, prices and brand palette are intentionally retained. */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--navy:#050b1c;--navy2:#101b35;--gold:#e6b45e;--gold2:#efbd68;--ink:#f4f2ee;--muted:#c5cada;--line:rgba(255,255,255,.18);--mist:rgba(255,255,255,.08);--radius:24px;--shadow:0 24px 70px rgba(0,0,0,.22)}
+html{scroll-padding-top:100px}
+body{background:radial-gradient(ellipse at 12% 4%,rgba(230,180,94,.17),transparent 28%),radial-gradient(ellipse at 90% 28%,rgba(61,91,151,.25),transparent 34%),linear-gradient(135deg,#050b1c 0%,#101b35 55%,#080d20 100%);color:#f4f2ee}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 25% 100%,rgba(230,180,94,.10),transparent 40%);opacity:.9}
+img{border-radius:16px}
+.site-header,.zx-header{background:rgba(5,11,28,.72)!important;backdrop-filter:blur(24px) saturate(150%)!important;-webkit-backdrop-filter:blur(24px) saturate(150%)!important;border-bottom:1px solid rgba(255,255,255,.15)!important;box-shadow:0 8px 35px rgba(0,0,0,.12)}
+.navlinks a,.zx-links a{color:rgba(255,255,255,.82)}
+.brand-name{color:#fff}
+.brand-sub{color:#c8cbd5}
+.hero{background:linear-gradient(120deg,rgba(5,11,28,.88),rgba(16,27,53,.68))!important;color:#fff;border-bottom:1px solid rgba(255,255,255,.12)}
+.hero:before{border-color:rgba(230,180,94,.25);box-shadow:0 0 0 55px rgba(230,180,94,.04),0 0 0 115px rgba(230,180,94,.025)}
+.hero p,.hero .lead,.hero-copy p{color:rgba(255,255,255,.8)}
+section:not(.hero):not(.ticker){scroll-margin-top:100px}
+.wrap,.zx-wrap{position:relative}
+section:not(.hero):not(.ticker),.panel,.card,.service-card,.price-card,.package-card,.project-card,.faq-item,.contact-card,.feature-card,.step-card,.about-card,.service-item,.quote-card,.process-card{border-color:rgba(255,255,255,.15)}
+/* Glass panels preserve the original content hierarchy while matching the reference's translucent UI. */
+.card,.service-card,.price-card,.package-card,.project-card,.faq-item,.contact-card,.feature-card,.step-card,.about-card,.service-item,.quote-card,.process-card,.package,.pricing-card,.project,.service,.faq-card{background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.055));border:1px solid rgba(255,255,255,.16);border-radius:22px;box-shadow:0 14px 38px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+h1,h2,h3,h4{color:inherit}
+p,li{color:inherit}
+body main>section:not(.hero){color:#f4f2ee}
+body main>section:not(.hero) h2,body main>section:not(.hero) h3{color:#fff}
+body main>section:not(.hero) p,body main>section:not(.hero) li{color:rgba(244,242,238,.78)}
+/* Keep text readable on every original light section without removing any content. */
+body main>section:not(.hero):not(.ticker){background:transparent}
+.btn,.nav-cta,.zx-cta,.zx-cta-mobile{border-radius:999px;transition:transform .25s,box-shadow .25s,background .25s}
+.btn-gold,.nav-cta,.zx-cta{background:linear-gradient(135deg,#f0c878,#dba64c);color:#101b35;border-color:rgba(255,255,255,.22);box-shadow:0 8px 22px rgba(230,180,94,.16)}
+.btn:hover,.nav-cta:hover,.zx-cta:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(230,180,94,.22)}
+.btn-dark{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.28)}
+.btn-light{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}
+input,textarea,select{background:rgba(255,255,255,.08)!important;color:#fff!important;border:1px solid rgba(255,255,255,.22)!important;border-radius:12px!important}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.55)}
+.zx-footer,footer{background:rgba(3,7,18,.82)!important;color:#f4f2ee;border-top:1px solid rgba(255,255,255,.14)}
+.zx-footer p,.zx-footer a,footer p,footer a{color:rgba(244,242,238,.78)}
+img{transition:transform .35s ease,filter .35s ease}
+a img:hover{filter:saturate(1.08);transform:scale(1.015)}
+@media(max-width:940px){.site-header,.zx-header{backdrop-filter:blur(22px)!important}.navlinks{background:rgba(5,11,28,.97)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
