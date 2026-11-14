@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\.zapifydesigns\.co\.za$ [NC]
+RewriteRule ^ https://zapifydesigns.co.za%{REQUEST_URI} [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+RewriteRule ^index\.html$ https://zapifydesigns.co.za/ [R=301,L]

@@ -10,3 +10,6 @@
 .feature-callout{margin-top:28px;padding:32px;border:1px solid rgba(165,96,159,.24);border-radius:24px;background:linear-gradient(115deg,#f8e8f4,#fffafd);display:flex;align-items:center;justify-content:space-between;gap:28px;box-shadow:0 16px 40px rgba(39,5,49,.05)}.feature-callout h3{font-size:25px;color:var(--deep);margin:13px 0 8px}.feature-callout p{max-width:760px;color:var(--muted);font-size:14px;line-height:1.8;margin:0}.feature-callout .btn{white-space:nowrap}@media(max-width:700px){.feature-callout{align-items:flex-start;flex-direction:column;padding:25px}.feature-callout .btn{width:100%}}
 
 .big-mark{display:none!important}
+
+/* Floating WhatsApp enquiry CTA */
+.whatsapp-float{position:fixed;right:24px;bottom:24px;z-index:90;padding:15px 21px;border-radius:999px;background:linear-gradient(115deg,#440E4B,#772377,#8E4A8A);color:#fff;font-size:13px;font-weight:800;box-shadow:0 14px 35px rgba(39,5,49,.32);border:1px solid rgba(255,255,255,.35);transition:transform .25s,box-shadow .25s}.whatsapp-float:hover{transform:translateY(-4px);box-shadow:0 20px 42px rgba(39,5,49,.4)}@media(max-width:600px){.whatsapp-float{right:14px;bottom:14px;padding:13px 17px;font-size:12px}}

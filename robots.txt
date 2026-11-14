@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://zapifydesigns.co.za/sitemap.xml

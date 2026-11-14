@@ -9,5 +9,5 @@ document.addEventListener('DOMContentLoaded',()=>{
     card.addEventListener('pointerleave',()=>card.style.transform='');
   });
   const form=document.querySelector('#contactForm');
-  if(form)form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);const subject=encodeURIComponent('Website enquiry — '+d.get('name'));const body=encodeURIComponent(`Name: ${d.get('name')}\nEmail: ${d.get('email')}\nService: ${d.get('service')}\n\n${d.get('message')}`);location.href=`mailto:info@zapifydesigns.co.za?subject=${subject}&body=${body}`});
+  if(form)form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);const body=encodeURIComponent(`Hello Zapify Designs, I would like to make an enquiry.\nName: ${d.get('name')}\nEmail: ${d.get('email')}\nService: ${d.get('service')}\nProject details: ${d.get('message')}`);window.open(`https://wa.me/27743899657?text=${body}`,'_blank','noopener,noreferrer')});
 });
