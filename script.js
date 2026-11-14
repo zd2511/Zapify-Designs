@@ -1,6 +1,13 @@
-const toggle=document.querySelector('.menu'),links=document.querySelector('.navlinks');
-if(toggle&&links){toggle.addEventListener('click',()=>{links.classList.toggle('open');toggle.setAttribute('aria-expanded',links.classList.contains('open')?'true':'false');toggle.textContent=links.classList.contains('open')?'×':'☰'});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');toggle.textContent='☰';toggle.setAttribute('aria-expanded','false')}))}
-document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
-document.querySelectorAll('form[data-mail-form]').forEach(form=>form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const data=new FormData(form);let body='';for(const [k,v] of data.entries())body+=`${k}: ${v}\n`;const subject=encodeURIComponent(form.dataset.subject||'Zapify Designs enquiry');location.href=`mailto:info@zapifydesigns.co.za?subject=${subject}&body=${encodeURIComponent(body)}`;}));
 
-document.querySelectorAll('[data-package],[data-service]').forEach(link=>link.addEventListener('click',()=>{const select=document.querySelector('#service');if(!select)return;const choice=link.dataset.package||link.dataset.service;const option=[...select.options].find(o=>o.textContent.trim()===choice||o.value===choice);if(option)select.value=option.value||option.textContent;}));
+document.addEventListener('DOMContentLoaded',()=>{
+  const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  const current=(location.pathname.split('/').pop()||'index.html');
+  document.querySelectorAll('.nav-track a').forEach(a=>{if(a.getAttribute('href')===current)a.classList.add('active')});
+  document.querySelectorAll('[data-tilt]').forEach(card=>{
+    card.addEventListener('pointermove',e=>{if(innerWidth<800)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(900px) rotateX(${-y*5}deg) rotateY(${x*6}deg) translateY(-5px)`});
+    card.addEventListener('pointerleave',()=>card.style.transform='');
+  });
+  const form=document.querySelector('#contactForm');
+  if(form)form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);const subject=encodeURIComponent('Website enquiry — '+d.get('name'));const body=encodeURIComponent(`Name: ${d.get('name')}\nEmail: ${d.get('email')}\nService: ${d.get('service')}\n\n${d.get('message')}`);location.href=`mailto:info@zapifydesigns.co.za?subject=${subject}&body=${body}`});
+});
