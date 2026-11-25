@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded',()=>{
   const page=(location.pathname.split('/').pop()||'index.html');
-  document.querySelectorAll('.dock-nav a').forEach(a=>{if(a.dataset.page===page){a.classList.add('active');a.setAttribute('aria-current','page')}});
+  document.querySelectorAll('.dock-nav a').forEach(a=>{if(a.dataset.page===page){a.classList.add('active');a.setAttribute('aria-current','page');a.setAttribute('aria-label',a.textContent.trim()+' — current page')}});
   const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -35px 0px'});
   document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${(i%4)*70}ms`;revealObserver.observe(el)});
   // Pointer-following cursor, limited to fine-pointer devices.
