@@ -1,13 +1,15 @@
-
 document.addEventListener('DOMContentLoaded',()=>{
-  const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});
-  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${Math.min(i%4,3)*75}ms`;observer.observe(el)});
-  const current=(location.pathname.split('/').pop()||'index.html');
-  document.querySelectorAll('.nav-track a').forEach(a=>{if(a.getAttribute('href')===current)a.classList.add('active')});
-  document.querySelectorAll('[data-tilt], .service-detail').forEach(card=>{
-    card.addEventListener('pointermove',e=>{if(innerWidth<800)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(900px) rotateX(${-y*5}deg) rotateY(${x*6}deg) translateY(-5px)`});
-    card.addEventListener('pointerleave',()=>card.style.transform='');
-  });
-  const form=document.querySelector('#contactForm');
-  if(form)form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);const body=encodeURIComponent(`Hello Zapify Designs, I would like to make an enquiry.\nName: ${d.get('name')}\nEmail: ${d.get('email')}\nService: ${d.get('service')}\nProject details: ${d.get('message')}`);window.open(`https://wa.me/27743899657?text=${body}`,'_blank','noopener,noreferrer')});
+  const page=(location.pathname.split('/').pop()||'index.html');
+  document.querySelectorAll('.dock-nav a').forEach(a=>{if(a.dataset.page===page){a.classList.add('active');a.setAttribute('aria-current','page')}});
+  const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -35px 0px'});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${(i%4)*70}ms`;revealObserver.observe(el)});
+  // Pointer-following cursor, limited to fine-pointer devices.
+  const dot=document.querySelector('.cursor-dot'),ring=document.querySelector('.cursor-ring');
+  if(dot&&ring&&matchMedia('(hover:hover) and (pointer:fine)').matches){let x=innerWidth/2,y=innerHeight/2,rx=x,ry=y;addEventListener('pointermove',e=>{x=e.clientX;y=e.clientY;dot.style.left=x+'px';dot.style.top=y+'px'});const follow=()=>{rx+=(x-rx)*.18;ry+=(y-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(follow)};follow();document.querySelectorAll('a,button,[data-tilt]').forEach(el=>{el.addEventListener('pointerenter',()=>ring.classList.add('is-hover'));el.addEventListener('pointerleave',()=>ring.classList.remove('is-hover'))})}
+  // Restrained 3D tilt; no hover-only dependency on touch screens.
+  document.querySelectorAll('[data-tilt],.service-detail').forEach(card=>{card.addEventListener('pointermove',e=>{if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(1000px) rotateX(${-y*4}deg) rotateY(${x*5}deg) translateY(-4px)`});card.addEventListener('pointerleave',()=>card.style.removeProperty('transform'))});
+  // Tactile ripple on buttons and dock links.
+  document.querySelectorAll('.btn,.dock-nav a,.nav-cta').forEach(el=>{el.addEventListener('pointerdown',e=>{const r=el.getBoundingClientRect(),s=document.createElement('span');s.className='ripple';s.style.left=(e.clientX-r.left)+'px';s.style.top=(e.clientY-r.top)+'px';el.style.position='relative';el.style.overflow='hidden';el.appendChild(s);setTimeout(()=>s.remove(),750);el.classList.add('touch-pop');setTimeout(()=>el.classList.remove('touch-pop'),400)})});
+  const form=document.querySelector('#contactForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);const body=encodeURIComponent(`Hello Zapify Designs, I would like to make an enquiry.\nName: ${d.get('name')}\nEmail: ${d.get('email')}\nService: ${d.get('service')}\nProject details: ${d.get('message')}`);window.open(`https://wa.me/27743899657?text=${body}`,'_blank','noopener,noreferrer')});
+  const year=document.querySelector('#year');if(year)year.textContent=new Date().getFullYear();
 });
