@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded',()=>{
   const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${Math.min(i%4,3)*75}ms`;observer.observe(el)});
   const current=(location.pathname.split('/').pop()||'index.html');
   document.querySelectorAll('.nav-track a').forEach(a=>{if(a.getAttribute('href')===current)a.classList.add('active')});
   document.querySelectorAll('[data-tilt]').forEach(card=>{
