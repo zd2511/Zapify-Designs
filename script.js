@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${Math.min(i%4,3)*75}ms`;observer.observe(el)});
   const current=(location.pathname.split('/').pop()||'index.html');
   document.querySelectorAll('.nav-track a').forEach(a=>{if(a.getAttribute('href')===current)a.classList.add('active')});
-  document.querySelectorAll('[data-tilt]').forEach(card=>{
+  document.querySelectorAll('[data-tilt], .service-detail').forEach(card=>{
     card.addEventListener('pointermove',e=>{if(innerWidth<800)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(900px) rotateX(${-y*5}deg) rotateY(${x*6}deg) translateY(-5px)`});
     card.addEventListener('pointerleave',()=>card.style.transform='');
   });
